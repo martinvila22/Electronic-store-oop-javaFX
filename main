@@ -1,0 +1,282 @@
+
+package main;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+import control.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import model.*;
+import view.*;
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        HelloApplicationView view = new HelloApplicationView();
+        FirstPageController controller = new FirstPageController();
+        view.show(primaryStage, controller);
+    }
+
+    public static void main(String[] args) {
+    	
+    	
+    	
+ Supplier sup1=new Supplier(true,"Samsung");
+ Supplier sup2=new Supplier(true,"Hyundai");
+ Supplier sup3=new Supplier(true,"Lenovo");
+ Supplier sup4=new Supplier(true,"HP");
+ Supplier sup5=new Supplier(true,"Dell");
+ Supplier sup6=new Supplier(true,"Beko");
+ Supplier sup7=new Supplier(true,"Sencor");
+ Supplier sup8=new Supplier(true,"Apple");
+ Supplier sup9=new Supplier(true,"Sony");
+ Supplier sup10=new Supplier(true,"LG");
+ArrayList<Supplier> suplier1=new ArrayList<>();
+ArrayList<Supplier> suplier2=new ArrayList<>();
+ArrayList<Supplier> suplier3=new ArrayList<>();
+ArrayList<Supplier> suplier4=new ArrayList<>();
+ArrayList<Supplier> suplier5=new ArrayList<>();
+suplier1.add(sup1);
+suplier1.add(sup2);
+suplier2.add(sup3);
+suplier2.add(sup4);
+suplier3.add(sup5);
+suplier3.add(sup6);
+suplier4.add(sup7);
+suplier4.add(sup8);
+suplier5.add(sup9);
+suplier5.add(sup10);
+
+Item it1=new Item("Tv",350,500,sup1,40);
+Item it2=new Item("Washing Machine",300,500,sup2,25);
+Item it3=new Item("Vending Machine",300,420,sup3,20);
+Item it4=new Item("Dishwasher",700,800,sup4,0);
+Item it5=new Item("Boiler",800,900,sup5,0);
+Item it6=new Item("Refrigirator",300,420,sup6,40);
+Item it7=new Item("Microwave",380,590,sup7,40);
+Item it8=new Item("Vacum cleaner",390,500,sup8,40);
+Item it9=new Item("Iron",300,420,sup9,40);
+Item it10=new Item("A/C",30,90,sup10,40);
+Item it11=new Item("Coffee Machine",300,500,sup1,40);
+Item it12=new Item("Smartphone",300,420,sup2,40);
+Item it13=new Item("Laptop HP",300,890,sup4,40);
+Item it14=new Item("Laptop Dell",300,500,sup5,40);
+Item it15=new Item("Laptop Lenovo",300,420,sup3,40);
+Item it16=new Item("Laptop Samsung",300,890,sup1,40);
+Item it17=new Item("Xbox",300,500,sup7,40);
+Item it18=new Item("Playstation 5",300,500,sup8,40);
+Item it19=new Item("Nintendo",300,700,sup9,40);
+Item it20=new Item("Playstation4",300,550,sup10,40);
+Item it21=new Item("MultiCooker Pro",300,420,sup1,40);
+Item it22=new Item("Air fryer",300,570,sup2,40);
+Item it23=new Item("Tv Samsung",300,520,sup1,40);
+Item it24=new Item("Tv Lg",300,425,sup4,40);
+
+ArrayList<Item> items1=new ArrayList<>();
+ArrayList<Item> items2=new ArrayList<>();
+ArrayList<Item> items3=new ArrayList<>();
+ArrayList<Item> items4=new ArrayList<>();
+ArrayList<Item> items5=new ArrayList<>();
+	items1.add(it1);
+	items1.add(it2);
+	items1.add(it3);
+	items1.add(it4);
+	items1.add(it5);
+	items2.add(it6);
+	items2.add(it7);
+	items2.add(it8);
+	items2.add(it9);
+	items2.add(it10);
+	items3.add(it11);
+	items3.add(it12);
+	items3.add(it13);
+	items3.add(it14);
+	items3.add(it15);
+	items4.add(it16);
+	items4.add(it17);
+	items4.add(it18);
+	items4.add(it19);
+	items4.add(it20);
+	items5.add(it21);
+	items5.add(it22);
+	items5.add(it23);
+	items5.add(it24);
+	items5.add(it1);
+    	
+
+      	int[] q=new int[5];
+      	q[0]=15;
+    	q[1]=15;
+    	q[2]=15;
+    	q[3]=15;
+    	q[4]=15;
+     	 
+     	Sector s1=new Sector(items1,"Major appliances",q,suplier1);
+     	Sector s2=new Sector(items2,"Small appliances",q,suplier2);
+     	Sector s3=new Sector(items3,"Clima",q,suplier3);
+     	Sector s4=new Sector(items4,"Tv,Audio,Video",q,suplier4);
+     	Sector s5=new Sector(items5,"Laptops",q,suplier5);
+     	
+     	Cashier cashier1=new Cashier("Emanuel","Adebayor",LocalDate.of(2000,7,7),+355677777,"Unkwnown","Cadeb",
+                "emanuel","Cs","cashier",505,s1,items1);
+     	Cashier cashier2=new Cashier("Agron","Demir",LocalDate.of(2001,12,3),+355677777,"Unkwnown","Cdemir",
+                "agron","Cs","cashier",500,s1,items1);
+     	Cashier cashier3=new Cashier("Emilio","Kortez",LocalDate.of(1,1,1),+355677777,"Unkwnown","Ckortez",
+                "emilio","Cs","cashier",525,s2,items2);
+     	Cashier cashier4=new Cashier("Sam","Kerr",LocalDate.of(1,1,1),+355677777,"Unkwnown","Ckerr",
+                "sam","Cs","cashier",550,s2,items2);
+     	Cashier cashier5=new Cashier("Emila","Perez",LocalDate.of(1,1,1),+355677777,"Unkwnown","Cperez",
+                "emilia","Cs","cashier",512,s3,items2);
+     	Cashier cashier6=new Cashier("Kristina","Nomi",LocalDate.of(1,1,1),+355677777,"Unkwnown","Cnomi",
+                "kristina","Cs","cashier",590,s3,items3);
+     	Cashier cashier7=new Cashier("Xhulja","Gjoni",LocalDate.of(1,1,1),+355677777,"Unkwnown","Cgjoni",
+                "xhulja","Cs","cashier",606,s4,items3);
+     	Cashier cashier8=new Cashier("Xhon","Snou",LocalDate.of(1,1,1),+355677777,"Unkwnown","Csnou",
+                "xhon","Cs","cashier",600,s4,items3);
+     	Cashier cashier9=new Cashier("Rei","Sari",LocalDate.of(1,1,1),+355677777,"Unkwnown","Csari",
+                "rei","Cs","cashier",505,s5,items4);
+     	Cashier cashier10=new Cashier("Padme","Ami",LocalDate.of(1,1,1),+355677777,"Unkwnown","Cami",
+                "padme","Cs","cashier",514,s5,items5);
+     	ArrayList<Cashier> cashiers1=new ArrayList<>();
+     	ArrayList<Cashier> cashiers2=new ArrayList<>();
+     	ArrayList<Cashier> cashiers3=new ArrayList<>();
+     	ArrayList<Cashier> cashiers4=new ArrayList<>();
+     	ArrayList<Cashier> cashiers5=new ArrayList<>();
+     	cashiers1.add(cashier1);
+     	cashiers1.add(cashier2);
+     	cashiers1.add(cashier3);
+     	cashiers1.add(cashier4);
+     	cashiers2.add(cashier3);
+     	cashiers2.add(cashier4);
+     	cashiers3.add(cashier5);
+     	cashiers3.add(cashier6);
+     	cashiers4.add(cashier7);
+     	cashiers4.add(cashier8);
+     	cashiers5.add(cashier9);
+     	cashiers5.add(cashier10);
+     ArrayList<Sector> sm1=new ArrayList<>();
+     sm1.add(s1);
+     sm1.add(s2);
+     ArrayList<Sector>sm2=new ArrayList<>();
+     sm2.add(s5);
+     sm2.add(s4);
+     ArrayList<Sector>sm3=new ArrayList<>();
+     sm3.add(s3);
+     ArrayList<Sector>sm4=new ArrayList<>();
+     sm4.add(s1);
+     ArrayList<Sector>sm5=new ArrayList<>();
+     sm5.add(s2);
+     sm5.add(s5);
+      	Manager manager1= new Manager("Tajler","Derden",LocalDate.of(1992,2,2),355689344,
+                  "Unkwnown","Mderden","Mderden","tajler","manager",77,sm1,cashiers1,suplier1,items1);
+    	Manager manager2= new Manager("Mariano","Xhunior",LocalDate.of(1994,2,2),3556903,
+                "Unkwnown","Ms","Mxhunior","mariano","manager",77,sm2,cashiers2,suplier2,items2);
+    	Manager manager3= new Manager("Bruno","Toraldo",LocalDate.of(1992,2,2),3550423,
+                "Unkwnown","Ms","Mtoraldo","bruno","manager",77,sm3,cashiers3,suplier3,items3);
+    	Manager manager4= new Manager("Pjeter","Ballo",LocalDate.of(1993,2,12),355932303,
+                "Unkwnown","Ms","Mballo","pjeter","manager",77,sm4,cashiers4,suplier4,items4);
+    	Manager manager5= new Manager("Ortenca","Kodra",LocalDate.of(1995,5,12),355603494,
+                "Unkwnown","Ms","Mkodra","ortenca","manager",77,sm5,cashiers5,suplier5,items5);
+    	
+    	ArrayList<Cashier> cashiers=new ArrayList<>();
+    	cashiers.add(cashier1);
+    	cashiers.add(cashier2);
+    	cashiers.add(cashier3);
+    	cashiers.add(cashier4);
+    	cashiers.add(cashier5);
+    	cashiers.add(cashier6);
+    	cashiers.add(cashier7);
+    	cashiers.add(cashier8);
+    	cashiers.add(cashier9);
+    	cashiers.add(cashier10);
+    	ArrayList<Manager> manager=new ArrayList<>();
+          manager.add(manager1);
+          manager.add(manager2);
+          manager.add(manager3);
+          manager.add(manager4);
+          manager.add(manager5);
+          ArrayList<Sector> sectors=new ArrayList<>();
+          sectors.add(s5);
+          sectors.add(s4);
+          sectors.add(s3);
+          sectors.add(s2);
+          sectors.add(s1);
+          new Administrator("Enter","Baka",LocalDate.of(1984,1,8), +355699999, "Bulevardi zogu i pare i albanistanit",
+          "Admin","admin","Administrator","Admin",5000, manager,cashiers,sectors);    
+          
+        launch(args);
+    }
+}
+
+   	/*ArrayList<Manager> manager=new ArrayList<>();
+
+        ArrayList<Cashier> cashiers=new ArrayList<>();
+        Cashier cashier1=new Cashier("Enter","Baka",LocalDate.of(1,1,1),123,"aaa","Cs",
+                "martin","Cs","vs",50505);
+        cashiers.add(cashier1);
+        Supplier s=new Supplier("Byrazeri",ItemType.HOUSE,true);
+        Item[] item=new Item[1];
+        int[] q=new int[1];
+        q[0]=5;
+        ArrayList<Item> items=new ArrayList<>();
+        item[0]=new Item("b;;a",ItemType.HOUSE,500,800,s, 0);
+        items.add(new Item("Tv",ItemType.HOUSE,300,890,s,40));
+        items.add(new Item("Tv",ItemType.HOUSE,300,890,s,40));
+        items.add(new Item("Tv",ItemType.HOUSE,300,890,s,40));
+        ArrayList<Sector>sectors=new ArrayList<>();
+        ArrayList<ItemType>itemTypes=new ArrayList<>() ;
+        itemTypes.add(ItemType.HOUSE);
+        ArrayList<Supplier>suppliers=new ArrayList<>();
+        suppliers.add(s);
+        Sector ss=new Sector(item,"sector",cashier1,q,itemTypes);
+        System.out.println(ss.getSectorName());
+        sectors.add(ss);
+        Cashier cashier=new Cashier("Enter","Baka",LocalDate.of(1,1,1),123,"aaa","Cs",
+                "martin","Cs","vs",50505,ss,items);
+        cashier.addItem(item[0]);
+        cashiers.add(cashier);
+       
+        
+        
+        Manager managers= new Manager("Entea","Bakiasi",LocalDate.of(2,2,2),05243,
+                "s","Ms","Ms","md","manager",77,sectors,
+                itemTypes,cashiers,suppliers,items);
+        manager.add(managers);
+        new Administrator("Martin","Vila",LocalDate.of(1,1,1), 0, "Ah","Ah","au","Administrator","Admin"
+        		,0, manager,cashiers);
+   
+        new Item("Tv",ItemType.HOUSE,500,800,s, 0);
+      manager.get(0).addCashier(cashier);
+      /*
+          	Supplier s=new Supplier("Byrazeri",ItemType.HOUSE,true);
+    	ArrayList<Item> items=new ArrayList<>();
+    	items.add(new Item("Tv",ItemType.HOUSE,500,800,s, 0));
+    	ArrayList<Integer> quantity=new ArrayList<>();
+    	quantity.add(10);
+    	new Bill(items,quantity,new Cashier("Enter","Baka",LocalDate.of(1,1,1),123,"aaa","Cs",
+                "martin","Cs","vs",50505));
+         
+    	/*int[] q=new int[1];
+      	 ArrayList<Sector>sectors=new ArrayList<>();
+           q[0]=5;
+      	Supplier s=new Supplier("Byrazeri",ItemType.HOUSE,true);
+      	 ArrayList<Item> items=new ArrayList<>();
+      	 items.add(new Item("Tv",ItemType.HOUSE,300,890,s,40));
+      	items.add(new Item("Xbox",ItemType.HOUSE,300,500,s,40));
+      	items.add(new Item("A/C",ItemType.HOUSE,300,420,s,40));
+      	ArrayList<ItemType>itemTypes=new ArrayList<>() ;
+          itemTypes.add(ItemType.HOUSE);
+      	 Cashier cashier1=new Cashier("Enter","Baka",LocalDate.of(1,1,1),123,"aaa","Cs",
+                   "martin","Cs","vs",50505);
+      	
+      	 Sector ss=new Sector(item,"sector",cashier1,q,itemTypes);
+      	ArrayList<Cashier> cashiers=new ArrayList<>();
+    	
+    	
+    	 
+        		 
+        
+    }
+     */
