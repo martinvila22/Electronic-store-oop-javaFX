@@ -15,7 +15,7 @@ public class Supplier implements Serializable {
     
     private String name;
     private boolean supplierForStore;
-    private int totalNrOfProductSold;
+    private transient int totalNrOfProductSold;
     private transient File outputFile = new File("src/dao/suppliers.dat");
 
     public Supplier( boolean supplierForStore, String name) {

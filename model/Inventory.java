@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 
 public class Inventory implements Serializable  {
@@ -12,17 +13,15 @@ public class Inventory implements Serializable  {
 	private static final long serialVersionUID = 2509837283020867465L;
 	private int soldQuantityTotal;
     private int nrofItems;
-    private ArrayList<Item> items;
+    private List<Item> items;
     private double totalSumOfSales;
-    private double totalSumOfCost;
     private Date dateCreated;
 
-    public Inventory(ArrayList<Item> items) {
+    public Inventory(List<Item> items) {
         this.items = items;
         this.nrofItems = (items != null) ? items.size() : 0;
         this.soldQuantityTotal = 0;
         this.totalSumOfSales = 0.0;
-        this.totalSumOfCost = 0.0;
         this.dateCreated = new Date(); // Sets the creation date to the current date
     }
 
@@ -34,7 +33,7 @@ public class Inventory implements Serializable  {
         return nrofItems;
     }
 
-    public ArrayList<Item> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 

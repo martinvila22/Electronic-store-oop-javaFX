@@ -2,7 +2,6 @@ package model;
 import dao.HeaderlessObjectOutputStream;
 import view.*;
 import control.*;
-import dao.*;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -25,7 +24,7 @@ public class Manager extends Employee implements Serializable {
     private ArrayList<Item> items=new ArrayList<>();
     private boolean permissionToWork;
     private String managerId;
-    private double TotalAmountSpent;
+    private double totalAmountSpent;
     private transient File outputFile=new File("src/dao/managers.dat");
 
     public Manager(String name,String surname,LocalDate dateOfBirth,int phoneNr,
@@ -295,12 +294,12 @@ public class Manager extends Employee implements Serializable {
 
 
 	public double getTotalAmountSpent() {
-		return this.TotalAmountSpent;
+		return this.totalAmountSpent;
 	}
 
 
 	public void addTotalAmountSpent(double sum) {
-	 this.TotalAmountSpent+=sum;
+	 this.totalAmountSpent+=sum;
 		
 	}
 }

@@ -26,7 +26,7 @@ private String surname;
 	  this.surname=surname;
 	  this.date0fBirth=dateOfBirth;
 	  this.phoneNr=phoneNr;
-	  this.address=address;
+
 	  this.username=username;
 	  this.password=password;
 	  this.address=address;
@@ -56,8 +56,8 @@ private String surname;
   public abstract boolean logIn(String username,String password);
   
   public boolean changePass(String oldP,String newP,String newPc) {
-	  if(oldP==this.password) {
-		  if(newP==newPc) {
+	  if(oldP.equals(this.password)) {
+		  if(newP.equals(newPc)) {
 			  this.password=newP;
 			  return true;
 	  }

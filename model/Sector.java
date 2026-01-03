@@ -1,6 +1,7 @@
 package model;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import dao.HeaderlessObjectOutputStream;
 
@@ -19,8 +20,8 @@ public class Sector implements Serializable  {
     private  transient File outputFile=new File("src/dao/sectors.dat");
     
  
-    public Sector(ArrayList<Item> item, String sectorName, 
-    		int[] quantity,ArrayList<Supplier> supplier) {
+    public Sector(List<Item> item, String sectorName,
+    		int[] quantity, List<Supplier> supplier) {
         
         items.addAll(item);
        for(int j=0;j<items.size();j++) {
@@ -42,10 +43,11 @@ public class Sector implements Serializable  {
         {
         ObjectOutputStream writer;
 
-        if(outputFile.length()>0)
-        writer=new HeaderlessObjectOutputStream(outputStream);
-        else
-        writer=new ObjectOutputStream(outputStream);
+        if(outputFile.length()>0) {
+            writer=new HeaderlessObjectOutputStream(outputStream);
+        } else {
+            writer=new ObjectOutputStream(outputStream);
+        }
 
         
         writer.writeObject(this);
@@ -108,7 +110,7 @@ public class Sector implements Serializable  {
        update(this);
     }
     
-    public ArrayList<Item> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
@@ -143,27 +145,22 @@ public class Sector implements Serializable  {
 			 try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream(this.outputFile));
 					 ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(this.outputFile)) ) {
 		            
-		            while (true) {
+		            while (reader.available() > 0) {
 		                try {
 		                   Sector sec;
-							
-								sec= (Sector) reader.readObject();
+
+		                   sec= (Sector) reader.readObject();
 		                   if(!sector.equals(sec)) {
 		                       outputStream.writeObject(sec);
 		                   }
 		                   else {
-		                	   outputStream.writeObject(sector);
+		                       outputStream.writeObject(sector);
 		                   }
-		                } catch (IOException | ClassNotFoundException ex) {
+		                } catch (IOException | ClassNotFoundException | ClassCastException ex) {
 		                    System.out.println("Error reading the file: " + ex.getMessage());
-		                    ex.printStackTrace();  
+		                    ex.printStackTrace();
+		                    break;
 		                }
-		                 catch (ClassCastException ex) {
-		                   
-		                    ex.printStackTrace();  
-		                }
-	
-		            
 		            }
 			 } catch (FileNotFoundException e) {
 				

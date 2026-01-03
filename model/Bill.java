@@ -1,5 +1,6 @@
 package model;
 import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -14,8 +15,8 @@ public class Bill implements Serializable  {
 	 */
 	private static final long serialVersionUID = 9135217586435213532L;
 	
-    private ArrayList<Item> items = new ArrayList<>();
-    private ArrayList<Integer> quantities = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
+    private List<Integer> quantities = new ArrayList<>();
     private Date created;
     private double totalAmountOfBill;
     private Cashier createdBy;
@@ -25,9 +26,9 @@ public class Bill implements Serializable  {
     private File file=new File(filepath);
   
 
-    public Bill(ArrayList<Item> item, ArrayList<Integer> quantity,Cashier cashier) {
+    public Bill(List<Item> item, List<Integer> quantity, Cashier cashier) {
     	for(int i=0;i<item.size();i++) {
-    	if(item.get(i).getIsItemOutOfStock()==true) {	
+    	if(item.get(i).getIsItemOutOfStock()) {
     		System.out.println("Item is out of Stock ");
     	}
     	}
@@ -87,7 +88,7 @@ public class Bill implements Serializable  {
         }
 
 
-private double calcTotal(ArrayList<Item> item, ArrayList<Integer> quantity) {
+private double calcTotal(List<Item> item, List<Integer> quantity) {
 	       double total = 0;
             for (int i = 0; i < item.size(); i++) {
                 total+= item.get(i).getSellingPrice() * quantity.get(i);

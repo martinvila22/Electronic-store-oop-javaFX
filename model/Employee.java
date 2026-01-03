@@ -23,13 +23,13 @@ public Employee(String name,String surname,LocalDate dateOfBirth,int phoneNr,
 	this.salary=salary;
 	
 }
-public Employee(String name,String surname,String username,String password,String employeeId,
+protected Employee(String name,String surname,String username,String password,String employeeId,
 		String role,double salary) {
 	super(name,surname,username,password);
 	this.employeeId=employeeId;
 	this.role=role;
 	this.salary=salary;
-	
+
 }
 
  public void setEmployeeId(String employeeId) {this.employeeId=employeeId;}

@@ -2,7 +2,6 @@ package model;
 import dao.HeaderlessObjectOutputStream;
 import view.*;
 import control.*;
-import dao.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -97,7 +96,7 @@ public class Item implements Serializable {
 
 
 
-    public static int itemsWithTheSamePrice(ArrayList<Item> itemsList, double price) {
+    public static int itemsWithTheSamePrice(List<Item> itemsList, double price) {
         int count = 0;
         for (int i = 0; i < itemsList.size(); i++) {
             if (itemsList.get(i).getSellingPrice() == price) {

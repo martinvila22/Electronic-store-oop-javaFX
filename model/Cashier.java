@@ -1,20 +1,13 @@
 package model;
-
-
-import java.io.EOFException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import dao.*;
 
 public class Cashier extends Employee implements Serializable {
     /**
@@ -28,7 +21,7 @@ public class Cashier extends Employee implements Serializable {
     private static int totalAmountOfBills;
     private static int totalAmountOfBillsForDay;
     private double totalForDay;
-    private static int dayOfWork;
+    private int dayOfWork;
     private boolean permissionToWork;
     private  double totalAmountWon;
     private Date startingDay;
@@ -39,7 +32,6 @@ public class Cashier extends Employee implements Serializable {
                    double salary,Sector sectorReponsible,ArrayList<Item> item){
         super(name,surname,dateOfBirth,phoneNr,address,cashierId,password,employeeId,role,salary);
         this.cashierId = cashierId;
-        Cashier.totalAmountOfBills = 0;
         this.totalForDay = 0.0;
         this.dayOfWork = 0;
         this.permissionToWork = true ;
@@ -68,7 +60,7 @@ public class Cashier extends Employee implements Serializable {
             ObjectOutputStream writer;
 
             if(outputFile.length()>0)
-                writer=new HeaderlessObjectOutputStream(outputStream);
+                writer=new dao.HeaderlessObjectOutputStream(outputStream);
             else
                 writer=new ObjectOutputStream(outputStream);
             writer.writeObject(this);
@@ -92,7 +84,7 @@ public class Cashier extends Employee implements Serializable {
     public void setSector(Sector s) {sectorResponsible=s;
         update();
     }
-    public void addBillNumber() {Cashier.totalAmountOfBills++;
+    public static void addBillNumber() {Cashier.totalAmountOfBills++;
         Cashier.totalAmountOfBillsForDay++;
     }
     public void addAmount(double amount) {
@@ -115,7 +107,7 @@ public class Cashier extends Employee implements Serializable {
     }
     public ArrayList<Item> getItem(){return this.items;}
 
-    public static int getDayOfWork() {
+    public int getDayOfWork() {
         return dayOfWork;
     }
     public static int TotalAmountOfBillsForAday() {
@@ -133,7 +125,7 @@ public class Cashier extends Employee implements Serializable {
         quant.add(quantity);
         Bill bill=new Bill(itemm,quant,this);
         bills.add(bill);
-        totalAmountOfBills++;
+        addBillNumber();
         totalForDay += bill.getTotalAmountOfBill();
         totalAmountWon+=bill.getTotalAmountOfBill();
         update();
@@ -167,8 +159,8 @@ public class Cashier extends Employee implements Serializable {
 
     public void resetTotalForDay() {
 
-        totalAmountOfBills = 0;
-        this.totalForDay=0;
+        Cashier.totalAmountOfBills = 0;
+        this.totalForDay = 0;
         update();
     }
     public void startShift() {
@@ -184,7 +176,7 @@ public class Cashier extends Employee implements Serializable {
         System.out.println("Fund dite: te ardhura = " + totalForDay + "  bills te bera: = "
                 + totalAmountOfBills);
         resetTotalForDay();
-        Cashier.dayOfWork++;
+        this.dayOfWork++;
         update();
     }
 
