@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class AdministratorDashboardController {
@@ -549,7 +550,7 @@ public class AdministratorDashboardController {
 
 
                 Cashier c= new Cashier(firstName,lastName,dateOfBirth,phone,address,cashierId,password,employeeId,
-                        "Cashier",salary,sector,sector.getItems());
+                        "Cashier",salary,sector, (ArrayList<Item>) sector.getItems());
                 administrator.addCashier(c);
                 popupStage.close();
             } catch (Exception e) {
