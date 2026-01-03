@@ -2,16 +2,11 @@ package control;
 
 import model.*;
 import view.*;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Separator;
@@ -54,7 +49,7 @@ public class ManagerController {
                     handleViewReports(selectedCashier);
                 }
             }
-            ;});
+            });
         this.view.getAddProductButton().setOnAction(e -> handleAddProduct());
         this.view.getRemoveProductButton().setOnAction(e -> handleRemoveProduct());
         this.view.getViewSectorsButton().setOnAction(e -> handleViewSectors());
@@ -74,15 +69,15 @@ public class ManagerController {
 
         view.getSubmitButton().setOnAction(e -> {
         	double sum=0;
-        	boolean t=false;
+        	boolean t1=false;
             String itemName =itemNameField.getText() ;
-            String quantity = quantityField.getText();
-            if (!itemName.isEmpty() && !quantity.isEmpty()) {
+            String quantity1 = quantityField.getText();
+            if (!itemName.isEmpty() && !quantity1.isEmpty()) {
                 for(Item item:manager.getItems()) {
                 	if(item.getItemName().equals(itemName)) {
-                		t=true;
-                		manager.increaseStock(item,Integer.parseInt(quantity));
-                		sum=item.getPurchasePrice()*Integer.parseInt(quantity);
+                		t1=true;
+                		manager.increaseStock(item,Integer.parseInt(quantity1));
+                		sum=item.getPurchasePrice()*Integer.parseInt(quantity1);
                 		for(Cashier cashier:manager.getCashiers()) {
                 			for(Item items:cashier.getItem()) {
                 				if(items.equals(item)) {
@@ -97,12 +92,11 @@ public class ManagerController {
                 	}
                 }
                 view.updateProductListView("");
-                
-                
+
             } else {
                 showErrorAlert("Please enter both cashier ID and name.");
             }
-            if(t==false) {
+            if(!t1) {
             	showErrorAlert("The item did not exist");
             }
             addSupplyStore.close();
@@ -168,9 +162,9 @@ public class ManagerController {
 
             Sector selectedSector = null;
             Supplier selectedSupplier = null;
-            double price = 0.0;
-            double purchasePrice = 0.0;
-            int quantity = 0;
+            double price1 = 0.0;
+            double purchasePrice1 = 0.0;
+            int quantity1 = 0;
 
             for (Sector sector : manager.getSectors()) {
                 if (sector.getSectorName().equals(productCategoryText)) {
@@ -198,15 +192,15 @@ public class ManagerController {
                 return;
             }
             try {
-                purchasePrice = Double.parseDouble(productPurchasePrice);
-                price = Double.parseDouble(productPriceText);
-                quantity = Integer.parseInt(productQuantityText);
-            } catch (NumberFormatException ex) {
+                purchasePrice1 = Double.parseDouble(productPurchasePrice);
+                price1 = Double.parseDouble(productPriceText);
+                quantity1 = Integer.parseInt(productQuantityText);
+            } catch (NumberFormatException _) {
                 showErrorAlert("Price and Quantity must be valid numbers.");
                 return;
             }
   
-            Item newProduct = new Item(productName, purchasePrice, price, selectedSupplier, quantity);
+            Item newProduct = new Item(productName, purchasePrice1, price1, selectedSupplier, quantity1);
             manager.addItem(newProduct);
 
             for(Cashier cashier:manager.getCashiers()) {
@@ -234,8 +228,6 @@ public class ManagerController {
         Scene scene = new Scene(layout, 400, 500);
         addProductStage.setScene(scene);
         addProductStage.show();
-    
-
 
 }
 
@@ -264,14 +256,16 @@ public class ManagerController {
         contentGrid.add(new Label("Cashier Name: "+" Surname: "), 0, 0);
         contentGrid.add(new Label(cas.getName()+" "+cas.getSurname()), 1, 0);
         contentGrid.add(new Label("Total Revenue:"), 0, 1);
-        contentGrid.add(new Label(" "+String.valueOf(sum1)), 1, 1);
+        contentGrid.add(new Label(" "+formattedSum1), 1, 1);
 
 
         contentGrid.add(new Label("Total Bills:"), 0, 2);
         contentGrid.add(new Label(" "+sum2), 1, 2);
 
         contentGrid.add(new Label("Accuracy Percentage:"), 0, 3);
-        contentGrid.add(new Label( cas.getDayOfWork()/sum1+" %"), 1, 3);
+        if(sum1==0)
+            sum1=1;
+        contentGrid.add(new Label( Cashier.getDayOfWork()/sum1+" %"), 1, 3);
 
         Separator separator = new Separator();
 
@@ -289,7 +283,6 @@ public class ManagerController {
         layout.setPadding(new Insets(15));
 
         layout.setAlignment(Pos.CENTER);
-
 
 
         Scene popupScene = new Scene(layout, 350, 250);
