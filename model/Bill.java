@@ -1,4 +1,6 @@
 package model;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,8 @@ import java.util.List;
 import java.util.Date;
 import java.util.Random;
 import java.io.*;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 public class Bill implements Serializable  {
     /**
@@ -26,6 +30,7 @@ public class Bill implements Serializable  {
     private File file=new File(filepath);
   
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public Bill(List<Item> item, List<Integer> quantity, Cashier cashier) {
     	for(int i=0;i<item.size();i++) {
     	if(item.get(i).getIsItemOutOfStock()) {
@@ -38,22 +43,23 @@ public class Bill implements Serializable  {
         this.totalAmountOfBill = calcTotal(item,quantity); 
         this.created = new Date();
         this.createdBy=cashier;
-        
-       
-        
-        
-        try(PrintWriter writer=new PrintWriter(file)){
-        	
-        	writer.println(this.billNumber);
-        	writer.println("Cashier: "+createdBy.getName()+createdBy.getSurname());
-        	for(int i=0;i<item.size();i++) {
-        		writer.println();
-        		writer.print(" Item name: "+items.get(i).getItemName());
-        		writer.print(" Price:  "+items.get(i).getSellingPrice());
-        		writer.print(" Quantity:  "+quantities.get(i));
-        	
-        	
-        }
+
+
+
+
+        try (PrintWriter writer =
+                     new PrintWriter(file, StandardCharsets.UTF_8)) {
+
+            writer.println(this.billNumber);
+            writer.println("Cashier: " + createdBy.getName() + " " + createdBy.getSurname());
+
+            for (int i = 0; i < items.size(); i++) {
+                writer.println();
+                writer.print("Item name: " + items.get(i).getItemName());
+                writer.print(" Price: " + items.get(i).getSellingPrice());
+                writer.print(" Quantity: " + quantities.get(i));
+            }
+
         	writer.println();
         	writer.println("Total price: "+calcTotal(items,quantities));
         }
@@ -76,6 +82,7 @@ public class Bill implements Serializable  {
         return billNumber;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public Date getCreated() {
         return created;
     }
@@ -83,6 +90,7 @@ public class Bill implements Serializable  {
     public double getTotalAmountOfBill() {
             return totalAmountOfBill;
         }
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public Cashier getCreatedBy() {
             return createdBy;
         }
@@ -121,6 +129,7 @@ private double calcTotal(List<Item> item, List<Integer> quantity) {
         return totalAmountOfBill - (totalAmountOfBill * (discountRate / 100));
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public void assignCashier(Cashier cashier) {
         this.createdBy = cashier;
        
