@@ -31,6 +31,7 @@ public class CashierDashboardController {
     private ArrayList<Bill> bills=new ArrayList<>();
     private static double totalAmount;
     private Label totalAmountLabel;
+    private static  final String TOTAL_AMOUNT = "Total Amount";
     boolean empty=false;
 
     public CashierDashboardController(Cashier cashier, CashierDashboardView view) {
@@ -41,44 +42,15 @@ public class CashierDashboardController {
     }
 
     private void setUpButtonActions() {
-        view.getAddToCartButton().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                openAddToCartWindow();
-            }
-        });
+        view.getAddToCartButton().setOnAction(event -> openAddToCartWindow());
 
-        view.getViewCartButton().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                openViewCartWindow();
-            }
-        });
+        view.getViewCartButton().setOnAction(event -> openViewCartWindow());
 
-        view.getStartShiftButton().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                openStartShiftWindow();
-            }
-        });
-        
+        view.getStartShiftButton().setOnAction(event -> openStartShiftWindow());
 
-        view.getEndShiftButton().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                openEndShiftWindow();
-            }
-        });
+        view.getEndShiftButton().setOnAction(event -> openEndShiftWindow());
 
-       view.getGenerateBillsButton().setOnAction(new EventHandler<ActionEvent>() {
-       @Override
-       public void handle(ActionEvent event)
-       {
-    	   
-    	   openGenerateBillsWindow();
-       }
-       
-       });
+        view.getGenerateBillsButton().setOnAction(event -> openGenerateBillsWindow());
     }
 
     private void openAddToCartWindow() {
@@ -97,7 +69,7 @@ public class CashierDashboardController {
             	String[] parts=selectedItem.split(" - ");
                 String itemName = parts[0];
                 empty=isProductEmpty(itemName);
-                if(empty==true) {
+                if(empty) {
                 	showAlert("Not possible" ,"Item is empty");
                   openAddToCartWindow();	
                 }else {
@@ -130,38 +102,26 @@ public class CashierDashboardController {
         Stage viewCartStage = new Stage();
         VBox viewCartLayout = new VBox(10);
         Label viewCartLabel = new Label("Cart Items:");
-        totalAmountLabel=createLabel("Total amount: "+CashierDashboardController.totalAmount ,14, "Bold");
+        totalAmountLabel=createLabel(TOTAL_AMOUNT+" "+CashierDashboardController.totalAmount ,14, "Bold");
         ObservableList<String> observableCartItems = FXCollections.observableArrayList(cartItems);
         ListView<String> cartListView = new ListView<>(observableCartItems);
-      
-       
-        view.getRemoveItemButton().setOnAction(new EventHandler<ActionEvent>()
-        
-        {
-        	@Override
-        	public void handle(ActionEvent event) {
-        		
+
+
+        view.getRemoveItemButton().setOnAction(event -> {
             String selectedItem = cartListView.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
-            	cartItems.remove(selectedItem);
+                cartItems.remove(selectedItem);
                 cartListView.getItems().remove(selectedItem);
-                totalAmount-=extractPriceFromProduct(selectedItem.split(" - ")[0]);
-                totalAmountLabel.setText("Total amount: "+CashierDashboardController.totalAmount); 
+                totalAmount -= extractPriceFromProduct(selectedItem.split(" - ")[0]);
+                totalAmountLabel.setText(TOTAL_AMOUNT + " " + CashierDashboardController.totalAmount);
                 System.out.println("Removed " + selectedItem + " from cart");
-                
-            }
-            else {
-            	showAlert("Not selected","Not selected");
-            }
-        	}
-        });
-        view.getCreateBillsButton().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-           
-                openGenerateBillsWindow(cartListView);
+            } else {
+                showAlert("Not selected", "Not selected");
             }
         });
+
+        view.getCreateBillsButton().setOnAction(event -> openGenerateBillsWindow(cartListView));
+
         HBox buttonLayout = new HBox(10);
         buttonLayout.getChildren().addAll(view.getRemoveItemButton(),view.getCreateBillsButton());
         viewCartLayout.getChildren().addAll(viewCartLabel, cartListView, buttonLayout,totalAmountLabel);
@@ -231,8 +191,7 @@ public class CashierDashboardController {
         billStage.setScene(billScene);
         billStage.setTitle("Create Bill");
         billStage.show();
-        totalAmount=0;
-        totalAmountLabel.setText("Total amount: "+totalAmount);
+        totalAmountLabel.setText(TOTAL_AMOUNT+" "+totalAmount);
         cartList.getItems().clear();
         cartItems.clear();
         
@@ -269,7 +228,7 @@ public class CashierDashboardController {
              }
              
              
-         };
+         }
          Label totalBills = new Label("Total Bills created: " + cashier.getBillsCount());
          billLayout.getChildren().addAll(billLabel, billList, totalBills);
 

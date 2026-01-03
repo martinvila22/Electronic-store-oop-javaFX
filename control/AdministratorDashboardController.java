@@ -786,13 +786,6 @@ public class AdministratorDashboardController {
         popupStage.showAndWait();
     }
 
-    private String showInputDialog(String title, String header) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle(title);
-        dialog.setHeaderText(header);
-        return dialog.showAndWait().orElse(null);
-    }
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
