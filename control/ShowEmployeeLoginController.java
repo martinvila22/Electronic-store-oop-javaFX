@@ -9,11 +9,10 @@ import model.*;
 import view.*;
 
 public class ShowEmployeeLoginController {
-    private File inputFileCashier = new File("C:\\Users\\User\\Downloads\\Electronic-store-oop-javaFX-main\\control\\dao\\cashiers.dat");
-    private File inputFileManager = new File("C:\\Users\\User\\Downloads\\Electronic-store-oop-javaFX-main\\control\\dao\\managers.dat");
-    private File inputFileAdministrator = new File("C:\\Users\\User\\Downloads\\Electronic-store-oop-javaFX-main\\control\\dao\\administrators.dat");
+    private File inputFileCashier = new File("control/dao/cashiers.dat");
+    private File inputFileManager = new File("control/dao/managers.dat");
+    private File inputFileAdministrator = new File("control/dao/administrators.dat");
 
-    private Stage stage;
 
     public void handleLogin(Stage stage,ShowEmployeeLoginView view1) {
         String employeeId = view1.getIdField().getText();
