@@ -21,12 +21,8 @@ public class ManagerController {
 
     private Manager manager;
     private ManagerDashboardView view;
-    double purchasePrice;
-    double price;
     boolean t=true;
     Supplier s=null;
-    int quantity;
-    Sector sec;
     
     public ManagerController(Manager manager, ManagerDashboardView view) {
         this.manager = manager;
