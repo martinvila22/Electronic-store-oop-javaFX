@@ -510,7 +510,7 @@ public class AdministratorDashboardController {
     }
 
     private Sector checkSector(String sectorName) {
-        try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream("C:\\Users\\drita\\IdeaProjects\\demo1\\src\\main\\java\\aHH\\dao\\sector.dat"))) {
+        try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream("control/dao/sectors.dat"))) {
             Sector s;
             while (true) {
                 s = (Sector) reader.readObject();

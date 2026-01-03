@@ -9,20 +9,15 @@ import model.*;
 import view.*;
 
 public class ShowEmployeeLoginController {
-    private File inputFileCashier = new File("src/dao/cashiers.dat");
-    private File inputFileManager = new File("src/dao/managers.dat");
-    private File inputFileAdministrator = new File("src/dao/administrators.dat");
+    private File inputFileCashier = new File("C:\\Users\\User\\Downloads\\Electronic-store-oop-javaFX-main\\control\\dao\\cashiers.dat");
+    private File inputFileManager = new File("C:\\Users\\User\\Downloads\\Electronic-store-oop-javaFX-main\\control\\dao\\managers.dat");
+    private File inputFileAdministrator = new File("C:\\Users\\User\\Downloads\\Electronic-store-oop-javaFX-main\\control\\dao\\administrators.dat");
 
     private Stage stage;
- 
-
-    
 
     public void handleLogin(Stage stage,ShowEmployeeLoginView view1) {
-         ShowEmployeeLoginView view=view1;
-    	
-    	String employeeId = view.getIdField().getText();
-        String password = view.getPasswordField().getText();
+        String employeeId = view1.getIdField().getText();
+        String password = view1.getPasswordField().getText();
         char type=employeeId.charAt(0);
         if(type=='C') {
         	Cashier cashier=checkCashier(employeeId,password);
@@ -37,7 +32,6 @@ public class ShowEmployeeLoginController {
         	}
         }
         else if(type=='M') {
-        	
         	Manager manager=checkManager(employeeId,password);
         	if(manager!=null) {
         		if(manager.hasPermissionToWork()) {
@@ -49,8 +43,6 @@ public class ShowEmployeeLoginController {
         			showAlert("Acces denied","You do not have a permission to Work");
         		}
         	}
-
-      
        }
         else if(type=='A') {
         	
@@ -64,11 +56,8 @@ public class ShowEmployeeLoginController {
         	System.out.println("nada");
         }
         }
-        
-   
-    }
-    
 
+    }
 
     public Cashier checkCashier(String username, String password) {
         try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream(inputFileCashier))) {

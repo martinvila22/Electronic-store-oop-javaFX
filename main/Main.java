@@ -16,6 +16,14 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
 
 
+        HelloApplicationView view = new HelloApplicationView();
+        FirstPageController controller = new FirstPageController();
+        view.show(primaryStage, controller);
+
+    }
+
+    public static void main(String[] args) {
+
 
         Supplier sup1=new Supplier(true,"Samsung");
         Supplier sup2=new Supplier(true,"Hyundai");
@@ -200,13 +208,6 @@ public class Main extends Application {
         new Administrator("Enter","Baka",LocalDate.of(1984,1,8), +355699999, "Bulevardi zogu i pare i albanistanit",
                 "Admin","admin","Administrator","Admin",5000, manager,cashiers,sectors);
 
-        HelloApplicationView view = new HelloApplicationView();
-        FirstPageController controller = new FirstPageController();
-        view.show(primaryStage, controller);
-
-    }
-
-    public static void main(String[] args) {
 
         launch(args);
     }
