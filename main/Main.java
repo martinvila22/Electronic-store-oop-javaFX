@@ -14,12 +14,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        HelloApplicationView view = new HelloApplicationView();
-        FirstPageController controller = new FirstPageController();
-        view.show(primaryStage, controller);
-    }
-
-    public static void main(String[] args) {
 
 
 
@@ -205,6 +199,14 @@ public class Main extends Application {
         sectors.add(s1);
         new Administrator("Enter","Baka",LocalDate.of(1984,1,8), +355699999, "Bulevardi zogu i pare i albanistanit",
                 "Admin","admin","Administrator","Admin",5000, manager,cashiers,sectors);
+
+        HelloApplicationView view = new HelloApplicationView();
+        FirstPageController controller = new FirstPageController();
+        view.show(primaryStage, controller);
+
+    }
+
+    public static void main(String[] args) {
 
         launch(args);
     }

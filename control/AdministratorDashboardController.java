@@ -637,7 +637,6 @@ public class AdministratorDashboardController {
 
     public  Cashier findCashierByName(String name) {
         String n;
-        String s;
         for (Cashier cashier : administrator.getCashiers()) {
             n=name.split(" ")[0];
             //s=name.split(" ")[1];
