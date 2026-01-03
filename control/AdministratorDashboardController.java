@@ -1,7 +1,5 @@
 package control;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -537,7 +535,7 @@ public class AdministratorDashboardController {
                 }
             }
         }
-        if(t==false) {
+        if(!t) {
             showAlert("Incorrect","Not a correct ID");
         }
     }
@@ -566,7 +564,6 @@ public class AdministratorDashboardController {
         String n;
         for (Cashier cashier1 : administrator.getCashiers()) {
             n=name.split(" ")[0];
-            //s=name.split(" ")[1];
             if (cashier1.getName().equals(n) ) {
                 return cashier1;
             }
@@ -576,14 +573,12 @@ public class AdministratorDashboardController {
 
     
     public void handleViewReports() {
-    	boolean t=false;
     	
     	 String selectedCashierName = adminView.getCashierListView().getSelectionModel().getSelectedItem();
          if (selectedCashierName != null) {
              String cashierName = selectedCashierName.split(" - ")[0];
              Cashier selectedCashier = findCashierByName(cashierName);
              if (selectedCashier != null) {
-            	 t=true;
                  viewReportsForCashier(selectedCashier);
                  System.out.println("k");
                  return;
@@ -596,10 +591,9 @@ public class AdministratorDashboardController {
              String managerName = selectedManagerName.split(" - ")[0];
              Manager selectedManager = findManagerByName(managerName);
              if (selectedManager != null) {
-            	 t=true;
                  viewReportsFromManager(selectedManager);
                  System.out.println("k");
-                 return;
+
              }         
           }
     	      
@@ -615,7 +609,6 @@ public class AdministratorDashboardController {
        
         for (Manager manager1 : administrator.getManagers()) {
             n=name.split(" ")[0];
-            ;
             if (manager1.getName().equals(n) ) {
                 return manager1;
             }
@@ -668,8 +661,8 @@ public class AdministratorDashboardController {
 
          contentGrid.add(new Label("Total for manager salary:"), 0, 1);
          sum=0.0;
-         for(Manager manager:administrator.getManagers()) {
-        	 sum+=manager.getSalary();
+         for(Manager manager1:administrator.getManagers()) {
+        	 sum+=manager1.getSalary();
          }
          contentGrid.add(new Label(sum+" "), 1, 1);
 
