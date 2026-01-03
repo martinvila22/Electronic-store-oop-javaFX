@@ -1,7 +1,5 @@
 package model;
 import dao.HeaderlessObjectOutputStream;
-import view.*;
-import control.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,13 +17,13 @@ public class Item implements Serializable {
     private Date purchaseDate;
     private double purchasePrice;
     private double sellingPrice;
-    private static transient int nrOfItemsSold;
+    private  transient int nrOfItemsSold;
     private boolean itemOutOfStock;
-    private Supplier supplier;
+    private final  Supplier supplier;
     private   int quantity;
     private boolean isItemDiscounted;
 
-    private transient File  outputFile=new File("src/dao/items.dat");
+    private static final File  outputFile=new File("src/dao/items.dat");
 
     public Item(String itemName,  double purchasePrice, double sellingPrice,
                 Supplier supplier,int quantity) {
@@ -33,7 +31,6 @@ public class Item implements Serializable {
         this.purchasePrice = purchasePrice;
         this.sellingPrice = sellingPrice;
         this.purchaseDate = new Date();
-        Item.nrOfItemsSold = 0;
         this.supplier = supplier;
         this.quantity = quantity;
         
@@ -42,26 +39,18 @@ public class Item implements Serializable {
         writeToFile();
     }
     private void writeToFile() {
-        try(FileOutputStream outputStream=new FileOutputStream(outputFile, true))
-        {
-            ObjectOutputStream writer;
-
-            if(outputFile.length()>0)
-                writer=new HeaderlessObjectOutputStream(outputStream);
-            else
-                writer=new ObjectOutputStream(outputStream);
-
+        try (FileOutputStream fos = new FileOutputStream(outputFile, true);
+             ObjectOutputStream writer = (outputFile.length() > 0)
+                     ? new HeaderlessObjectOutputStream(fos)
+                     : new ObjectOutputStream(fos)) {
 
             writer.writeObject(this);
 
-           
+        } catch (IOException ex) {
+            System.out.println("Error during writing item: " + ex.getMessage());
         }
-        catch(IOException ex)
-        {
-            System.out.println("Error during writing item"+ ex.getMessage());
-        }
-
     }
+
 
     public void increaseStock(int quantity) {
         if (quantity <= 0) {
@@ -114,7 +103,7 @@ public class Item implements Serializable {
 
 
     public Date getPurchaseDate() {
-        return purchaseDate;
+        return new Date(purchaseDate.getTime());
     }
 
     public double getPurchasePrice() {
