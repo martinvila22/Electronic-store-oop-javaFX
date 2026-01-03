@@ -102,7 +102,7 @@ public class HelloApplicationView {
         mainLayout.setBackground(new Background(new BackgroundFill(Color.web("#F4F6F6"), CornerRadii.EMPTY, null)));
 
         userButton.setOnAction(e -> controller.handleUserSelection(primaryStage));
-        aboutButton.setOnAction(e -> controller.handleAboutSelection(primaryStage));
+        aboutButton.setOnAction(e -> controller.handleAboutSelection());
 
         Scene scene = new Scene(mainLayout, 450, 350);
         scene.setFill(Color.WHITE);

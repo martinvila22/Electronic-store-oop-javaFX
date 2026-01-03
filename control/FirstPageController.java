@@ -10,6 +10,8 @@ import javafx.stage.Modality;
 
 public class FirstPageController {
 
+    private static final String SUNDAY_OFF="Sunday Off";
+
     public void handleUserSelection(Stage stage) {
        ShowEmployeeLoginView view=new ShowEmployeeLoginView();
        showEmployeeLoginController control=new showEmployeeLoginController();
@@ -17,7 +19,7 @@ public class FirstPageController {
     }
 
 
-	public void handleAboutSelection(Stage stage) {
+	public void handleAboutSelection() {
         Stage aboutStage = new Stage();
         VBox aboutPane = new VBox(20);
         aboutPane.setAlignment(Pos.CENTER);
@@ -27,15 +29,18 @@ public class FirstPageController {
         aboutLabel.setWrapText(true);
         aboutLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-padding: 10px;");
 
-        Label anotherLabel = new Label(
-                "This application helps manage operations for an electronic store, providing functions for clients and employees.\n\n" +
-                        "Features:\n" +
-                        "- Job applications (Cashier, Manager)\n" +
-                        "- View products with details and pricing\n" +
-                        "- Client and employee views\n" +
-                        "- Version 1.0.2\n\n" +
-                        "Developed by: Entea Bakiasi, Martin Vila, Mikael Xhangolli"
-        );
+        Label anotherLabel = new Label("""
+    This application helps manage operations for an electronic store, providing functions for clients and employees.
+
+    Features:
+    - Job applications (Cashier, Manager)
+    - View products with details and pricing
+    - Client and employee views
+    - Version 1.0.2
+
+    Developed by: Entea Bakiasi, Martin Vila, Mikael Xhangolli
+    """);
+
         anotherLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #666666; -fx-padding: 15px;");
 
         Label otherLabel = new Label("Version 1.0.2");
@@ -49,16 +54,16 @@ public class FirstPageController {
         aboutStage.show();
     }
 
-    public void handleJobSelection(Stage stage) {
+    public void handleJobSelection() {
         Stage jobStage = new Stage();
         VBox jobSelectionLayout = new VBox(25);
         jobSelectionLayout.setAlignment(Pos.CENTER);
         jobSelectionLayout.setStyle("-fx-padding: 20px; -fx-background-color: #f9f9f9;");
 
         jobSelectionLayout.getChildren().addAll(
-                createJobCard("Cashier 1 - $30/hour", "9:00 AM - 3:00 PM", "Sunday Off", "Cashier 1", jobStage),
-                createJobCard("Cashier 2 - $30/hour", "9:00 AM - 3:00 PM", "Sunday Off", "Cashier 2", jobStage),
-                createJobCard("Manager - $70/hour", "10:00 AM - 6:00 PM", "Sunday Off", "Manager", jobStage)
+                createJobCard("Cashier 1 - $30/hour", "9:00 AM - 3:00 PM",SUNDAY_OFF , "Cashier 1"),
+                createJobCard("Cashier 2 - $30/hour", "9:00 AM - 3:00 PM", SUNDAY_OFF, "Cashier 2"),
+                createJobCard("Manager - $70/hour", "10:00 AM - 6:00 PM", SUNDAY_OFF, "Manager")
         );
 
         Scene scene = new Scene(jobSelectionLayout, 650, 500);
@@ -67,7 +72,7 @@ public class FirstPageController {
         jobStage.show();
     }
 
-    private HBox createJobCard(String jobTitle, String workingHours, String dayOff, String jobType, Stage jobStage) {
+    private HBox createJobCard(String jobTitle, String workingHours, String dayOff, String jobType) {
         HBox jobCard = new HBox(20);
         jobCard.setAlignment(Pos.CENTER);
         jobCard.setStyle("-fx-background-color: #8FBC8F; -fx-padding: 15px; -fx-border-radius: 12px; -fx-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);");
@@ -85,7 +90,7 @@ public class FirstPageController {
         applyButton.setStyle("-fx-font-size: 14px; -fx-background-color: #fff8e1; -fx-text-fill: #4CAF50; -fx-padding: 10px; -fx-border-radius: 5px; -fx-font-weight: bold;");
         applyButton.setOnAction(e -> {
             System.out.println("Applying for: " + jobType);
-            showJobApplicationForm(jobStage, jobType);
+            showJobApplicationForm(jobType);
         });
 
         jobInfo.getChildren().addAll(titleLabel, hoursLabel, dayOffLabel, applyButton);
@@ -94,7 +99,7 @@ public class FirstPageController {
         return jobCard;
     }
 
-    private void showJobApplicationForm(Stage stage, String jobTitle) {
+    private void showJobApplicationForm(String jobTitle) {
         Stage applicationStage = new Stage();
         VBox applicationFormLayout = new VBox(20);
         applicationFormLayout.setAlignment(Pos.CENTER);
