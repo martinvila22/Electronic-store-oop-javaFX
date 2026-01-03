@@ -36,110 +36,37 @@ public class AdministratorDashboardController {
     }
 
     private void initializeView() {
-        adminView.getAddManagerButton().setOnAction(new EventHandler<ActionEvent>()
+        adminView.getAddManagerButton().setOnAction(event -> addManager());
 
-        {
-               @Override
-     public void handle(ActionEvent event) {
-  addManager();
+        adminView.getGeneralReportsButton().setOnAction(event -> handleGeneralReports());
 
-    }
-               
-             }
-        );
-        adminView.getGeneralReportsButton().setOnAction(new EventHandler<ActionEvent>()
-        		{
-            @Override
-            public void handle(ActionEvent event) { 
-            handleGeneralReports();	
-            }
-            }
-        );
-            
-        adminView.getAddItemsButton().setOnAction(new EventHandler <ActionEvent>(){
-        @Override
-        public void handle(ActionEvent  event) {
+        adminView.getAddItemsButton().setOnAction(event -> addItems());
 
-            addItems();
+        adminView.getTotalRevenueButton().setOnAction(event -> handleTotalRenevue());
 
-
-        }
-
-        }
-        );
-        
-        adminView.getTotalRevenueButton().setOnAction(new EventHandler <ActionEvent>(){
-
-            @Override
-            public void handle(ActionEvent event) {
-                handleTotalRenevue();
-            }
-
-
+        adminView.getModifyItemsButton().setOnAction(event -> {
+            // modifyItems();
         });
-        adminView.getModifyItemsButton().setOnAction(new EventHandler <ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                //modifyItems();
-            }
-        });
-        adminView.getRemoveManagerButton().setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event) {
-                removeManager();
-            }
-        });
-        adminView.getModifyManagerButton().setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event) {
-                ModifyManager();
-            }
-        });
-        adminView.getAddCashierButton().setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event) {
-                addCashier();
-            }
-        });
-        adminView.getRemoveCashierButton().setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event) {
-                removeCashier();
-            }
-        });
+
+        adminView.getRemoveManagerButton().setOnAction(event -> removeManager());
+
+        adminView.getModifyManagerButton().setOnAction(event -> ModifyManager());
+
+        adminView.getAddCashierButton().setOnAction(event -> addCashier());
+
+        adminView.getRemoveCashierButton().setOnAction(event -> removeCashier());
+
         adminView.getModifyCashierButton().setOnAction(event -> showModifyCashier());
-        
-        adminView.getRevokePermissionButton().setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Event handler");
-                revokePermission();
-            }
-        });
-        adminView.getGivePermissionButton().setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event) {
 
-                givePermission();
-            }
-            
+        adminView.getRevokePermissionButton().setOnAction(event -> {
+            System.out.println("Event handler");
+            revokePermission();
         });
-        adminView.getViewReportsButton().setOnAction(new EventHandler<ActionEvent>()
- {
-        	
- 
-        	@Override
- public void handle(ActionEvent event) {
-        		handleViewReports();
 
-        	}
-    });
+        adminView.getGivePermissionButton().setOnAction(event -> givePermission());
+
+        adminView.getViewReportsButton().setOnAction(event -> handleViewReports());
+
     }
 
     private void populateLists() {
