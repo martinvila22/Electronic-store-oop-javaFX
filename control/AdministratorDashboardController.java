@@ -71,12 +71,12 @@ public class AdministratorDashboardController {
 
     private void populateLists() {
         adminView.getManagerListView().getItems().clear();
-        administrator.getManagers().forEach(manager ->
-                adminView.getManagerListView().getItems().add(manager.getName() + "  " + manager.getSurname() + " - " + manager.getManagerId()));
+        administrator.getManagers().forEach(manager1 ->
+                adminView.getManagerListView().getItems().add(manager1.getName() + "  " + manager1.getSurname() + " - " + manager1.getManagerId()));
 
         adminView.getCashierListView().getItems().clear();
-        administrator.getCashiers().forEach(cashier ->
-                adminView.getCashierListView().getItems().add(cashier.getName() + " " + cashier.getSurname() + " - " + cashier.getCashierId()));
+        administrator.getCashiers().forEach(cashier1 ->
+                adminView.getCashierListView().getItems().add(cashier1.getName() + " " + cashier1.getSurname() + " - " + cashier1.getCashierId()));
 
 
     }
@@ -526,8 +526,8 @@ public class AdministratorDashboardController {
         String existingId = showInputDialog("Modify Cashier ID", "Enter Existing Cashier ID:");
         if (existingId != null) {
 
-            for(Cashier cashier:administrator.getCashiers()) {
-                if(cashier.getUsername().equals(existingId)) {
+            for(Cashier cashier1:administrator.getCashiers()) {
+                if(cashier1.getUsername().equals(existingId)) {
                     t=true;
                     String newId = showInputDialog("Modify Cashier ID", "Enter New Cashier ID:");
                     if (newId != null) {
@@ -564,11 +564,11 @@ public class AdministratorDashboardController {
 
     public  Cashier findCashierByName(String name) {
         String n;
-        for (Cashier cashier : administrator.getCashiers()) {
+        for (Cashier cashier1 : administrator.getCashiers()) {
             n=name.split(" ")[0];
             //s=name.split(" ")[1];
-            if (cashier.getName().equals(n) ) {
-                return cashier;
+            if (cashier1.getName().equals(n) ) {
+                return cashier1;
             }
         }
         return null;
@@ -613,11 +613,11 @@ public class AdministratorDashboardController {
     private  Manager findManagerByName(String name) {
         String n;
        
-        for (Manager manager : administrator.getManagers()) {
+        for (Manager manager1 : administrator.getManagers()) {
             n=name.split(" ")[0];
             ;
-            if (manager.getName().equals(n) ) {
-                return manager;
+            if (manager1.getName().equals(n) ) {
+                return manager1;
             }
         }
         return null;
@@ -659,9 +659,9 @@ public class AdministratorDashboardController {
          contentGrid.setAlignment(Pos.CENTER_LEFT);
 
          contentGrid.add(new Label("Total for cashier salary:"), 0, 0);
-         for(Cashier cashier:administrator.getCashiers()) {
-        	 cashier.update();
-        	 sum+=cashier.getSalary();
+         for(Cashier cashier1:administrator.getCashiers()) {
+        	 cashier1.update();
+        	 sum+=cashier1.getSalary();
          }
          contentGrid.add(new Label(sum+" "), 1, 0);
 
@@ -675,8 +675,8 @@ public class AdministratorDashboardController {
 
          contentGrid.add(new Label("Total expenses for items bought:"), 0, 2);
          sum=0.0;
-         for(Manager manager:administrator.getManagers()) {
-        	 sum+=manager.getTotalAmountSpent();
+         for(Manager manager1:administrator.getManagers()) {
+        	 sum+=manager1.getTotalAmountSpent();
          }
          contentGrid.add(new Label(" "+String.valueOf(sum)), 1, 2);
 
@@ -890,15 +890,15 @@ public class AdministratorDashboardController {
         contentGrid.setAlignment(Pos.CENTER_LEFT);
 
         contentGrid.add(new Label("Total Revenue received by sales:"), 0, 0);
-        for(Cashier cashier:administrator.getCashiers()) {
-       	 sum+=cashier.getTotalAmountWon();
+        for(Cashier cashier1:administrator.getCashiers()) {
+       	 sum+=cashier1.getTotalAmountWon();
         }
         contentGrid.add(new Label(sum+" "), 1, 0);
         
         contentGrid.add(new Label("Total Bills created:"), 0, 1);
         int sum1=0;
-        for(Cashier cashier:administrator.getCashiers()) {
-       	 sum1+=cashier.getBillsCount();
+        for(Cashier cashier1:administrator.getCashiers()) {
+       	 sum1+=cashier1.getBillsCount();
         }
         contentGrid.add(new Label(sum1+" "), 1, 1);
 
