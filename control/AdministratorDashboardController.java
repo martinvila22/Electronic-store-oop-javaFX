@@ -935,7 +935,8 @@ public class AdministratorDashboardController {
                     String sectorName = sectorField.getText();
 
                     Sector sector = checkSector(sectorName);
-                    sector.updateSectorItems(quantity);
+                    Item Item = null;
+                    sector.updateItemQuantity(Item,quantity);
                     Item newItem = new Item(itemName,12, price,
                    supplier,quantity);
                     sector.addNewItem(newItem);
