@@ -153,7 +153,7 @@ public class AdministratorDashboardController {
                 adminView.getManagerListView().getItems().add(firstName + " " + lastName + " - " + managerId);
 
                 popupStage.close();
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException _) {
                 showAlert("Invalid Input", "Please enter valid numbers for Phone and Salary.");
             } catch (IllegalArgumentException e) {
                 showAlert("Invalid Input", e.getMessage());
@@ -475,7 +475,7 @@ public class AdministratorDashboardController {
                         "Cashier",salary,sector,sector.getItems());
                 administrator.addCashier(c);
                 popupStage.close();
-            } catch (Exception e) {
+            } catch (Exception _) {
                 showAlert("Invalid Input", "Please fill out the form correctly.");
             }
         });
@@ -511,7 +511,7 @@ public class AdministratorDashboardController {
                     return s;
                 }
             }
-        } catch (EOFException ex) {
+        } catch (EOFException _) {
             System.out.println("Reached the end of file");
         } catch (ClassNotFoundException | IOException ex) {
             ex.printStackTrace();
@@ -856,7 +856,7 @@ public class AdministratorDashboardController {
                    supplier,quantity);
                     sector.addNewItem(newItem);
                     popupStage.close();
-                } catch (Exception e) {
+                } catch (Exception _) {
                     showAlert("Invalid Input", "Please fill out the form correctly.");
                 }
             });
