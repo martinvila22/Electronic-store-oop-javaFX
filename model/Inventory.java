@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public class Inventory implements Serializable  {
     private Date dateCreated;
 
     public Inventory(List<Item> items) {
-        this.items = items;
+        this.items = (items != null) ? new ArrayList<>(items) : new ArrayList<>();
         this.nrofItems = (items != null) ? items.size() : 0;
         this.soldQuantityTotal = 0;
         this.totalSumOfSales = 0.0;
@@ -34,7 +35,7 @@ public class Inventory implements Serializable  {
     }
 
     public List<Item> getItems() {
-        return items;
+        return Collections.unmodifiableList(items);
     }
 
     public void addNewItem(Item item) {
