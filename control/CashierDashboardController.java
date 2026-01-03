@@ -17,6 +17,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 
@@ -215,7 +217,7 @@ public class CashierDashboardController {
          	billList.getItems().add("Bill"+(i+1)+" - "+cashier.getbills().get(i).getCreated());
              File file =cashier.getbills().get(i).getFile();
              if (file.exists() && file.canRead()) {
-                 try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                 try (BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
                      String line;
                      while ((line=reader.readLine()) != null) {
                      	
