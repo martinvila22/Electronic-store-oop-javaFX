@@ -23,10 +23,18 @@ public class AdministratorDashboardController {
     private AdministratorDashboardView adminView;
     private Manager manager;
     private Cashier cashier;
-   
+    private static final String SUBMIT="submit";
+    private static final String FONT="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #4CAF50;";
+    private static final String SECTOR="sector";
+    private static final String SALARY="Salary:";
+    private static final String INVALID_INPUT="Invalid Input";
+    private static final String ADRESS="Address:";
+    private static final String CANCEL="Cancel";
+    private static final String PASSWORD="Password:";
+    private static final String CLOSE="Close";
     private Supplier supplier;
 
-    public AdministratorDashboardController(Stage stage, Administrator administrator,AdministratorDashboardView view) {
+    public AdministratorDashboardController(Administrator administrator,AdministratorDashboardView view) {
         this.administrator = administrator;
         this.adminView = view;
         populateLists();
@@ -43,12 +51,12 @@ public class AdministratorDashboardController {
         adminView.getTotalRevenueButton().setOnAction(event -> handleTotalRenevue());
 
         adminView.getModifyItemsButton().setOnAction(event -> {
-            // modifyItems();
+             //needs to be implemented to modify items
         });
 
         adminView.getRemoveManagerButton().setOnAction(event -> removeManager());
 
-        adminView.getModifyManagerButton().setOnAction(event -> ModifyManager());
+        adminView.getModifyManagerButton().setOnAction(event -> modifyManager());
 
         adminView.getAddCashierButton().setOnAction(event -> addCashier());
 
@@ -111,23 +119,23 @@ public class AdministratorDashboardController {
         gridPane.add(new Label("Phone Number:"), 0, 3);
         gridPane.add(phoneField, 1, 3);
 
-        gridPane.add(new Label("Address:"), 0, 4);
+        gridPane.add(new Label(ADRESS), 0, 4);
         gridPane.add(addressField, 1, 4);
 
         gridPane.add(new Label("Manager ID:"), 0, 5);
         gridPane.add(managerIdField, 1, 5);
 
-        gridPane.add(new Label("Password:"), 0, 6);
+        gridPane.add(new Label(PASSWORD), 0, 6);
         gridPane.add(passwordField, 1, 6);
 
         gridPane.add(new Label("Employee ID:"), 0, 7);
         gridPane.add(employeeIdField, 1, 7);
 
-        gridPane.add(new Label("Salary:"), 0, 8);
+        gridPane.add(new Label(SALARY), 0, 8);
         gridPane.add(salaryField, 1, 8);
 
-        Button submitButton = new Button("Submit");
-        Button cancelButton = new Button("Cancel");
+        Button submitButton = new Button(SUBMIT);
+        Button cancelButton = new Button();
         HBox buttonBox = new HBox(10, submitButton, cancelButton);
 
         gridPane.add(buttonBox, 1, 10);
@@ -154,9 +162,9 @@ public class AdministratorDashboardController {
 
                 popupStage.close();
             } catch (NumberFormatException _) {
-                showAlert("Invalid Input", "Please enter valid numbers for Phone and Salary.");
+                showAlert(INVALID_INPUT, "Please enter valid numbers for Phone and Salary.");
             } catch (IllegalArgumentException e) {
-                showAlert("Invalid Input", e.getMessage());
+                showAlert(INVALID_INPUT, e.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();  // Log the stack trace for debugging
                 showAlert("Error", "An unexpected error occurred.");
@@ -213,29 +221,29 @@ public class AdministratorDashboardController {
         grid.add(nameLabel, 0, 1);
         grid.add(nameField, 1, 1);
 
-        Label addressLabel = new Label("Address:");
+        Label addressLabel = new Label(ADRESS);
         TextField addressField = new TextField(cashier.getAddress());
         grid.add(addressLabel, 0, 2);
         grid.add(addressField, 1, 2);
 
-        Label passwordLabel = new Label("Password:");
+        Label passwordLabel = new Label(PASSWORD);
         PasswordField passwordField = new PasswordField();
         passwordField.setText(cashier.getPassword());
         grid.add(passwordLabel, 0, 3);
         grid.add(passwordField, 1, 3);
 
-        Label salaryLabel = new Label("Salary:");
+        Label salaryLabel = new Label(SALARY);
         TextField salaryField = new TextField(String.valueOf(cashier.getSalary()));
         grid.add(salaryLabel, 0, 4);
         grid.add(salaryField, 1, 4);
 
-        Label sectorLabel = new Label("Sector:");
+        Label sectorLabel = new Label(SECTOR);
         TextField sectorField = new TextField();
         grid.add(sectorLabel, 0, 5);
         grid.add(sectorField, 1, 5);
 
-        Button submitButton = new Button("Submit");
-        Button cancelButton = new Button("Cancel");
+        Button submitButton = new Button(SUBMIT);
+        Button cancelButton = new Button(CANCEL);
         grid.add(submitButton, 0, 6);
         grid.add(cancelButton, 1, 6);
 
@@ -289,7 +297,7 @@ public class AdministratorDashboardController {
     }
     
     
-    public void ModifyManager() {
+    public void modifyManager() {
         String selectedManagerName;
         selectedManagerName = adminView.getManagerListView().getSelectionModel().getSelectedItem();
         if (selectedManagerName != null) {
@@ -317,30 +325,30 @@ public class AdministratorDashboardController {
         grid.add(nameLabel, 0, 1);
         grid.add(nameField, 1, 1);
 
-        Label addressLabel = new Label("Address:");
+        Label addressLabel = new Label(ADRESS);
         TextField addressField = new TextField(manager.getAddress());
         grid.add(addressLabel, 0, 2);
         grid.add(addressField, 1, 2);
 
-        Label passwordLabel = new Label("Password:");
+        Label passwordLabel = new Label(PASSWORD);
         PasswordField passwordField = new PasswordField();
         passwordField.setText(manager.getPassword());
         grid.add(passwordLabel, 0, 3);
         grid.add(passwordField, 1, 3);
 
-        Label salaryLabel = new Label("Salary:");
+        Label salaryLabel = new Label(SALARY);
         TextField salaryField = new TextField(String.valueOf(manager.getSalary()));
         grid.add(salaryLabel, 0, 4);
         grid.add(salaryField, 1, 4);
 
-        Label sectorLabel = new Label("Sector:");
+        Label sectorLabel = new Label(SECTOR);
         TextField sectorField = new TextField();
         sectorField.setText(String.valueOf(manager.getSectors().get(0).getSectorName()));
         grid.add(sectorLabel, 0, 5);
         grid.add(sectorField, 1, 5);
 
-        Button submitButton = new Button("Submit");
-        Button cancelButton = new Button("Cancel");
+        Button submitButton = new Button(SUBMIT);
+        Button cancelButton = new Button(CANCEL);
         grid.add(submitButton, 0, 6);
         grid.add(cancelButton, 1, 6);
 
@@ -375,7 +383,7 @@ public class AdministratorDashboardController {
             
             Stage formStage = (Stage) grid.getScene().getWindow();
             formStage.close();
-            ModifyManager();
+            modifyManager();
         });
 
         cancelButton.setOnAction(e -> {
@@ -430,26 +438,26 @@ public class AdministratorDashboardController {
         gridPane.add(new Label("Phone Number:"), 0, 3);
         gridPane.add(phoneField, 1, 3);
 
-        gridPane.add(new Label("Address:"), 0, 4);
+        gridPane.add(new Label(ADRESS), 0, 4);
         gridPane.add(addressField, 1, 4);
 
         gridPane.add(new Label("Cashier ID:"), 0, 5);
         gridPane.add(cashierIdField, 1, 5);
 
-        gridPane.add(new Label("Password:"), 0, 6);
+        gridPane.add(new Label(PASSWORD), 0, 6);
         gridPane.add(passwordField, 1, 6);
 
         gridPane.add(new Label("Employee ID:"), 0, 7);
         gridPane.add(employeeIdField, 1, 7);
 
-        gridPane.add(new Label("Salary:"), 0, 8);
+        gridPane.add(new Label(SALARY), 0, 8);
         gridPane.add(salaryField, 1, 8);
 
         gridPane.add(new Label("Sector "), 0, 9);
         gridPane.add(sectorField, 1, 9);
 
-        Button submitButton = new Button("Submit");
-        Button cancelButton = new Button("Cancel");
+        Button submitButton = new Button(SUBMIT);
+        Button cancelButton = new Button(CANCEL);
         HBox buttonBox = new HBox(10, submitButton, cancelButton);
 
         gridPane.add(buttonBox, 1, 10);
@@ -476,7 +484,7 @@ public class AdministratorDashboardController {
                 administrator.addCashier(c);
                 popupStage.close();
             } catch (Exception _) {
-                showAlert("Invalid Input", "Please fill out the form correctly.");
+                showAlert(INVALID_INPUT, "Please fill out the form correctly.");
             }
         });
 
@@ -517,27 +525,6 @@ public class AdministratorDashboardController {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    private void modifyCashier() {
-        boolean t=false;
-        String existingId = showInputDialog("Modify Cashier ID", "Enter Existing Cashier ID:");
-        if (existingId != null) {
-
-            for(Cashier cashier1:administrator.getCashiers()) {
-                if(cashier1.getUsername().equals(existingId)) {
-                    t=true;
-                    String newId = showInputDialog("Modify Cashier ID", "Enter New Cashier ID:");
-                    if (newId != null) {
-                        administrator.modifyCashierId(newId, existingId);
-                        populateLists();
-                    }
-                }
-            }
-        }
-        if(!t) {
-            showAlert("Incorrect","Not a correct ID");
-        }
     }
 
     private void revokePermission() {
@@ -644,7 +631,7 @@ public class AdministratorDashboardController {
          popupStage.initModality(Modality.APPLICATION_MODAL);
          popupStage.setTitle("Monthly expenses :");
          Label header = new Label("Monthly expenses Report");
-         header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #4CAF50;");
+         header.setStyle(FONT);
          GridPane contentGrid = new GridPane();
          contentGrid.setHgap(10);
          contentGrid.setVgap(10);
@@ -671,11 +658,11 @@ public class AdministratorDashboardController {
          for(Manager manager1:administrator.getManagers()) {
         	 sum+=manager1.getTotalAmountSpent();
          }
-         contentGrid.add(new Label(" "+String.valueOf(sum)), 1, 2);
+         contentGrid.add(new Label(" "+sum), 1, 2);
 
          Separator separator = new Separator();
 
-         Button closeButton = new Button("Close");
+         Button closeButton = new Button(CLOSE);
 
          closeButton.setOnAction(e -> popupStage.close());
 
@@ -707,7 +694,7 @@ public class AdministratorDashboardController {
         popupStage.setTitle("Cashier Performance Report");
 
         Label header = new Label("Cashier Performance Report");
-        header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #4CAF50;");
+        header.setStyle(FONT);
 
         GridPane contentGrid = new GridPane();
         contentGrid.setHgap(10);
@@ -732,7 +719,7 @@ public class AdministratorDashboardController {
         Separator separator = new Separator();
 
 
-        Button closeButton = new Button("Close");
+        Button closeButton = new Button(CLOSE);
         closeButton.setOnAction(e -> popupStage.close());
         HBox footer = new HBox(closeButton);
         footer.setAlignment(Pos.CENTER);
@@ -757,7 +744,7 @@ public class AdministratorDashboardController {
         popupStage.setTitle("Manager Performance Report");
 
         Label header = new Label("Manager Performance Report");
-        header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #4CAF50;");
+        header.setStyle(FONT);
 
         GridPane contentGrid = new GridPane();
         contentGrid.setHgap(10);
@@ -782,7 +769,7 @@ public class AdministratorDashboardController {
         Separator separator = new Separator();
 
 
-        Button closeButton = new Button("Close");
+        Button closeButton = new Button(CLOSE);
         closeButton.setOnAction(e -> popupStage.close());
         HBox footer = new HBox(closeButton);
         footer.setAlignment(Pos.CENTER);
@@ -838,8 +825,8 @@ public class AdministratorDashboardController {
             gridPane.add(new Label("Sector:"), 0, 3);
             gridPane.add(sectorField, 1, 3);
 
-            Button submitButton = new Button("Submit");
-            Button cancelButton = new Button("Cancel");
+            Button submitButton = new Button(SUBMIT);
+            Button cancelButton = new Button(CANCEL);
             HBox buttonBox = new HBox(10, submitButton, cancelButton);
 
             gridPane.add(buttonBox, 1, 4);
@@ -857,7 +844,7 @@ public class AdministratorDashboardController {
                     sector.addNewItem(newItem);
                     popupStage.close();
                 } catch (Exception _) {
-                    showAlert("Invalid Input", "Please fill out the form correctly.");
+                    showAlert(INVALID_INPUT, "Please fill out the form correctly.");
                 }
             });
             cancelButton.setOnAction(event -> popupStage.close());
@@ -875,7 +862,7 @@ public class AdministratorDashboardController {
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle("Monthly revenue :");
         Label header = new Label("Monthly revenue Report");
-        header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #4CAF50;");
+        header.setStyle(FONT);
         GridPane contentGrid = new GridPane();
         contentGrid.setHgap(10);
         contentGrid.setVgap(10);
@@ -898,7 +885,7 @@ public class AdministratorDashboardController {
 
         Separator separator = new Separator();
 
-        Button closeButton = new Button("Close");
+        Button closeButton = new Button(CLOSE);
 
         closeButton.setOnAction(e -> popupStage.close());
 

@@ -71,7 +71,7 @@ public class AdministratorDashboardView {
         cashierListView = getAvailableCashiers();
         sectorListView=getAvailableSectors();
         createMenuBar();
-        new AdministratorDashboardController(stage, admin, this);
+        new AdministratorDashboardController( admin, this);
         showDashboard(createLayout());
     }
 
