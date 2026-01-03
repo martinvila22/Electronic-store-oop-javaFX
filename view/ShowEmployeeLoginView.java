@@ -19,7 +19,7 @@ public class ShowEmployeeLoginView {
     private Button loginButton = new Button("Login");
     private Label messageLabel = new Label();
 
-    public void showLogin(Stage stage, showEmployeeLoginController controller) {
+    public void showLogin(Stage stage, ShowEmployeeLoginController controller) {
         idField.setPromptText("Enter your Employee ID");
         passwordField.setPromptText("Enter your Password");
 

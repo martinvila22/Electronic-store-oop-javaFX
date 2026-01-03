@@ -14,7 +14,7 @@ public class FirstPageController {
 
     public void handleUserSelection(Stage stage) {
        ShowEmployeeLoginView view=new ShowEmployeeLoginView();
-       showEmployeeLoginController control=new showEmployeeLoginController();
+       ShowEmployeeLoginController control=new ShowEmployeeLoginController();
         view.showLogin(stage, control);
     }
 

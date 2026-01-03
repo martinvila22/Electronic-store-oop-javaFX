@@ -3,30 +3,23 @@ package control;
 import java.io.*;
 
 
-
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
 import javafx.stage.Stage;
 import model.*;
 import view.*;
 
-public class showEmployeeLoginController {
-	private TextField idField = new TextField();
-	private PasswordField passwordField = new PasswordField();
+public class ShowEmployeeLoginController {
     private File inputFileCashier = new File("src/dao/cashiers.dat");
     private File inputFileManager = new File("src/dao/managers.dat");
     private File inputFileAdministrator = new File("src/dao/administrators.dat");
-    private ShowEmployeeLoginView view;
+
     private Stage stage;
  
 
     
 
-    public void handleLogin(Stage stage,ShowEmployeeLoginView view) {
-    	this.view=view;
+    public void handleLogin(Stage stage,ShowEmployeeLoginView view1) {
+         ShowEmployeeLoginView view=view1;
     	
     	String employeeId = view.getIdField().getText();
         String password = view.getPasswordField().getText();
@@ -34,7 +27,7 @@ public class showEmployeeLoginController {
         if(type=='C') {
         	Cashier cashier=checkCashier(employeeId,password);
         	if(cashier!=null) {
-        		if(cashier.getPermisssionToWork()==true) {
+        		if(cashier.getPermisssionToWork()) {
         		System.out.println("permission granted");
         	 new CashierDashboardView(stage, cashier);
         }
@@ -47,7 +40,7 @@ public class showEmployeeLoginController {
         	
         	Manager manager=checkManager(employeeId,password);
         	if(manager!=null) {
-        		if(manager.hasPermissionToWork()==true) {
+        		if(manager.hasPermissionToWork()) {
         	
         	new ManagerDashboardView(stage,manager);
         }
@@ -88,7 +81,7 @@ public class showEmployeeLoginController {
                     if (cashier.logIn(username, password)) {
                          return cashier;  
                     }
-                } catch (EOFException ex) {
+                } catch (EOFException _) {
                     System.out.println("Reached the end of file for cashiers.");
                     break;  // End of file reached, break out of the loop
                 } catch (ClassCastException ex) {
@@ -110,15 +103,14 @@ public class showEmployeeLoginController {
             while (true) {
                 try {
                     Object obj = reader.readObject();
-                    if (obj instanceof Manager) {
-                        Manager manager = (Manager) obj;
+                    if (obj instanceof Manager manager) {
                         if (manager.logIn(username, password)) {
                             return manager;
                         }
                     } else {
                         System.out.println("Unexpected object type: " + obj.getClass().getName());
                     }
-                } catch (EOFException ex) {
+                } catch (EOFException _) {
                     System.out.println("Reached the end of file for managers.");
                     break;
                 } catch (ClassCastException ex) {
@@ -147,7 +139,7 @@ public class showEmployeeLoginController {
                     if (administrator.logIn(username, password)) {
                         return administrator;
                     }
-                } catch (EOFException e) {
+                } catch (EOFException _) {
                     
                     break;
                 }
