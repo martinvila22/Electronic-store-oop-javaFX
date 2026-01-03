@@ -3,8 +3,6 @@ package control;
 
 import model.*;
 import view.CashierDashboardView;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -166,15 +164,21 @@ public class CashierDashboardController {
         ArrayList<Item> selectedItems = new ArrayList<>();
         ArrayList<Integer> quantities = new ArrayList<>();
 
-        for (String Fullitem:cartList.getItems()) {
-        	String[] parts=Fullitem.split(" - ");
+        for (String fullItem : cartList.getItems()) {
+            String[] parts = fullItem.split(" - ");
             String itemName = parts[0];
+
             Item item = findItemByName(itemName);
+            if (item == null) {
+                continue;
+            }
+
             selectedItems.add(item);
             quantities.add(1);
-            billList.getItems().add(itemName+"-"+item.getSellingPrice());
+            billList.getItems().add(itemName + "-" + item.getSellingPrice());
         }
-    
+
+
         Bill bill=cashier.createBill(selectedItems, quantities);
         bills.add(bill);
         Label totalLabel = createLabel("Total: $" + bill.getTotalAmountOfBill(), 16, "normal");
