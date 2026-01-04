@@ -35,10 +35,6 @@ public class AdministratorDashboardView {
     private Button checkTotalRevenueButton;
     private Button modifyItemsButton;
     private Button generalReportsButton;
-    private MenuBar menuBar;
-    private Menu profileMenu;
-    private MenuItem profileMenuItem;
-    private MenuItem signOutMenuItem;
 
     public Button getGeneralReportsButton() {
         return generalReportsButton;
