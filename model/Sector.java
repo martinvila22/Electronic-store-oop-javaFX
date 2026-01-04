@@ -7,10 +7,19 @@ import java.util.List;
 
 public final class Sector implements Serializable {
 
+
     public static class SectorLoadException extends RuntimeException {
         public SectorLoadException(String message, Throwable cause) {
             super(message, cause);
         }
+    }
+
+    public Sector(Sector other) {
+        this.items = new ArrayList<>(other.getItems());
+        this.suppliers = new ArrayList<>(other.getSuppliers());
+        this.quantities = new ArrayList<>(other.getQuantities());
+        this.nrOfItems = other.getNrOfItems();
+        this.sectorName = other.getSectorName();
     }
 
     private static final long serialVersionUID = -444374744967224169L;
