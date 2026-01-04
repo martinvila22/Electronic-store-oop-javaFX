@@ -163,7 +163,7 @@ public class Manager extends Employee implements Serializable {
 
 
     @Override
-    public String EmployeeTask() {
+    public String employeeTask() {
         // Manager-specific task implementation
         return "Managing cashiers, sectors, suppliers, and products.";
     }

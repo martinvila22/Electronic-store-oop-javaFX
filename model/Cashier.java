@@ -230,7 +230,7 @@ public class Cashier extends Employee implements Serializable {
     }
 
     @Override
-    public String EmployeeTask() {
+    public String employeeTask() {
 
         return "Deals with products and customers.Prepares the bills and updates the system";
     }

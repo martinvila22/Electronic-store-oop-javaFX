@@ -41,7 +41,7 @@ public String getRole() {return role;}
 public double getSalary() {return salary;}
 
 
-public abstract String EmployeeTask();
+public abstract String employeeTask();
 
 @Override
 public String toString() {

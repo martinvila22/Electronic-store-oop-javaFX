@@ -147,7 +147,7 @@ public class Administrator extends Employee implements Serializable {
     }
 
     @Override
-    public String EmployeeTask() {
+    public String employeeTask() {
         return "Administrates the system, gives and takes permissions, and oversees employees' work.";
     }
 
