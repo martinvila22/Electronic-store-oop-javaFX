@@ -3,7 +3,6 @@ package model;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
@@ -16,7 +15,7 @@ public class Supplier implements Serializable {
     private String name;
     private boolean supplierForStore;
     private transient int totalNrOfProductSold;
-    private transient File outputFile = new File("src/dao/suppliers.dat");
+    private static final File outputFile = new File("src/dao/suppliers.dat");
 
     public Supplier( boolean supplierForStore, String name) {
         this.name = name;
@@ -26,15 +25,16 @@ public class Supplier implements Serializable {
         writeToFile();
     }
 
+    public Supplier(Supplier supplier) {
+    }
+
     private void writeToFile() {
         try (FileOutputStream outputStream = new FileOutputStream(outputFile, true)) {
             ObjectOutputStream writer;
 
             if (outputFile.length() > 0) {
                 writer = new HeaderlessObjectOutputStream(outputStream);
-            } else {
-                writer = new ObjectOutputStream(outputStream);
-            }
+            } else writer = new ObjectOutputStream(outputStream);
 
             writer.writeObject(this);
            
