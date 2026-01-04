@@ -79,9 +79,6 @@ public final class Sector implements Serializable {
         }
     }
 
-    // =========================
-    // Business Logic
-    // =========================
     public boolean isSectorEmpty() {
         return nrOfItems == 0;
     }
@@ -128,9 +125,7 @@ public final class Sector implements Serializable {
         }
     }
 
-    // =========================
-    // Getters (Defensive)
-    // =========================
+
     public List<Item> getItems() {
         return Collections.unmodifiableList(items);
     }
@@ -156,9 +151,6 @@ public final class Sector implements Serializable {
         save();
     }
 
-    // =========================
-    // toString
-    // =========================
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Sector name: ").append(sectorName).append("\n");
