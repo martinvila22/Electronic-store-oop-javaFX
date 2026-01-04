@@ -12,6 +12,7 @@ import java.util.Random;
 import java.io.*;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Bill implements Serializable  {
     /**
@@ -25,7 +26,7 @@ public class Bill implements Serializable  {
     private double totalAmountOfBill;
     private Cashier createdBy;
     Random random=new Random();
-    private int billNumber=random.nextInt(123134);
+    private int billNumber = ThreadLocalRandom.current().nextInt(123134);
     private String filepath="src/dao/Bill"+billNumber+".txt";
     private File file=new File(filepath);
   
