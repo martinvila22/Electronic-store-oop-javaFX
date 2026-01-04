@@ -1,4 +1,5 @@
 package model;
+
 import dao.HeaderlessObjectOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,36 +9,35 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Item implements Serializable {
-    /**
-     *
-     */
+
     private static final long serialVersionUID = -7280777475184326490L;
 
     private String itemName;
     private Date purchaseDate;
     private double purchasePrice;
     private double sellingPrice;
-    private  transient int nrOfItemsSold;
+    private transient int nrOfItemsSold;
     private boolean itemOutOfStock;
-    private final  Supplier supplier;
-    private   int quantity;
+    private final Supplier supplier;
+    private int quantity;
     private boolean isItemDiscounted;
 
-    private static final File  outputFile=new File("src/dao/items.dat");
+    private static final File outputFile = new File("src/dao/items.dat");
 
-    public Item(String itemName,  double purchasePrice, double sellingPrice,
-                Supplier supplier,int quantity) {
+    public Item(String itemName, double purchasePrice, double sellingPrice,
+                Supplier supplier, int quantity) {
+
         this.itemName = itemName;
         this.purchasePrice = purchasePrice;
         this.sellingPrice = sellingPrice;
         this.purchaseDate = new Date();
-        this.supplier = supplier;
+        this.supplier = new Supplier(supplier);
         this.quantity = quantity;
-        
         this.itemOutOfStock = (quantity == 0);
 
         writeToFile();
     }
+
     private void writeToFile() {
         try (FileOutputStream fos = new FileOutputStream(outputFile, true);
              ObjectOutputStream writer = (outputFile.length() > 0)
@@ -51,7 +51,6 @@ public class Item implements Serializable {
         }
     }
 
-
     public void increaseStock(int quantity) {
         if (quantity <= 0) {
             throw new IllegalArgumentException("nrPositiv");
@@ -60,7 +59,9 @@ public class Item implements Serializable {
         this.itemOutOfStock = (this.quantity == 0);
     }
 
-    public void setQuantity(int quantity) {this.quantity=quantity;}
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public void decreaseStock(int quantity) {
         if (quantity <= 0 || quantity > this.quantity) {
@@ -82,9 +83,6 @@ public class Item implements Serializable {
         this.sellingPrice -= this.sellingPrice * (percentage / 100);
     }
 
-
-
-
     public static int itemsWithTheSamePrice(List<Item> itemsList, double price) {
         int count = 0;
         for (int i = 0; i < itemsList.size(); i++) {
@@ -95,12 +93,9 @@ public class Item implements Serializable {
         return count;
     }
 
-
-
     public String getItemName() {
         return itemName;
     }
-
 
     public Date getPurchaseDate() {
         return new Date(purchaseDate.getTime());
@@ -113,8 +108,14 @@ public class Item implements Serializable {
     public double getSellingPrice() {
         return sellingPrice;
     }
-    public boolean getIsItemDiscounted() {return this.isItemDiscounted;}
-    public boolean getIsItemOutOfStock() {return this.itemOutOfStock;}
+
+    public boolean getIsItemDiscounted() {
+        return this.isItemDiscounted;
+    }
+
+    public boolean getIsItemOutOfStock() {
+        return this.itemOutOfStock;
+    }
 
     public void setSellingPrice(double sellingPrice) {
         this.sellingPrice = sellingPrice;
@@ -127,15 +128,13 @@ public class Item implements Serializable {
     public boolean isItemOutOfStock() {
         return itemOutOfStock;
     }
-
     public Supplier getSupplier() {
-        return supplier;
+        return new Supplier(this.supplier);
     }
 
     public int getQuantity() {
         return quantity;
     }
-    
 
     @Override
     public String toString() {
@@ -147,11 +146,10 @@ public class Item implements Serializable {
     }
 
     public void update() {
-        try(ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("src/dao/items.dat"))) {
-            {
+        try (ObjectOutputStream outputStream =
+                     new ObjectOutputStream(new FileOutputStream("src/dao/items.dat"))) {
 
-                outputStream.writeObject(this);
-            }
+            outputStream.writeObject(this);
             System.out.println("updated");
 
         } catch (IOException ex) {
@@ -163,6 +161,5 @@ public class Item implements Serializable {
     }
 
     public void setSector(Sector sec) {
-
     }
 }
