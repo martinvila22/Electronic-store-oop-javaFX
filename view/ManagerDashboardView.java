@@ -1,20 +1,11 @@
 package view;
 import model.*;
 import control.*;
-import dao.*;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 
