@@ -5,7 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Sector implements Serializable {
+public final class Sector implements Serializable {
+
+    public static class SectorLoadException extends RuntimeException {
+        public SectorLoadException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
 
     private static final long serialVersionUID = -444374744967224169L;
 
@@ -15,13 +21,13 @@ public class Sector implements Serializable {
     private int nrOfItems;
     private String sectorName;
 
-    private static final File outputFile = new File("src/dao/sectors.dat");
+    private static final File OUTPUT_FILE = new File("src/dao/sectors.dat");
 
-    // Constructor: Defensive copy of input lists
     public Sector(List<Item> items, String sectorName, int[] quantities, List<Supplier> suppliers) {
         this.items = (items != null) ? new ArrayList<>(items) : new ArrayList<>();
         this.suppliers = (suppliers != null) ? new ArrayList<>(suppliers) : new ArrayList<>();
         this.quantities = new ArrayList<>();
+
         if (quantities != null) {
             for (int q : quantities) {
                 this.quantities.add(q);
@@ -34,22 +40,55 @@ public class Sector implements Serializable {
         }
 
         this.sectorName = sectorName;
-
-        saveSector();
     }
 
+    public void save() {
+        List<Sector> allSectors = loadAllSectors();
+        boolean replaced = false;
 
+        for (int i = 0; i < allSectors.size(); i++) {
+            if (allSectors.get(i).sectorName.equals(this.sectorName)) {
+                allSectors.set(i, this);
+                replaced = true;
+                break;
+            }
+        }
 
+        if (!replaced) {
+            allSectors.add(this);
+        }
+
+        try (ObjectOutputStream oos =
+                     new ObjectOutputStream(new FileOutputStream(OUTPUT_FILE))) {
+            oos.writeObject(allSectors);
+        } catch (IOException e) {
+            throw new SectorLoadException("Failed to save sectors", e);
+        }
+    }
+
+    private static List<Sector> loadAllSectors() {
+        if (!OUTPUT_FILE.exists() || OUTPUT_FILE.length() == 0) {
+            return new ArrayList<>();
+        }
+
+        try (ObjectInputStream ois =
+                     new ObjectInputStream(new FileInputStream(OUTPUT_FILE))) {
+            return (List<Sector>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new SectorLoadException("Failed to load sectors", e);
+        }
+    }
+
+    // =========================
+    // Business Logic
+    // =========================
     public boolean isSectorEmpty() {
         return nrOfItems == 0;
     }
 
     public boolean isItemOutOfStock(Item item) {
         int index = items.indexOf(item);
-        if (index >= 0) {
-            return quantities.get(index) == 0;
-        }
-        return false;
+        return index >= 0 && quantities.get(index) == 0;
     }
 
     public Item firstOutOfStockItem() {
@@ -62,12 +101,12 @@ public class Sector implements Serializable {
     }
 
     public void addNewItem(Item newItem) {
-        if (newItem != null) {
-            items.add(newItem);
-            quantities.add(newItem.getQuantity());
-            nrOfItems += newItem.getQuantity();
-            saveSector();
-        }
+        if (newItem == null) return;
+
+        items.add(newItem);
+        quantities.add(newItem.getQuantity());
+        nrOfItems += newItem.getQuantity();
+        save();
     }
 
     public void deleteItem(Item item) {
@@ -76,7 +115,7 @@ public class Sector implements Serializable {
             nrOfItems -= quantities.get(index);
             items.remove(index);
             quantities.remove(index);
-            saveSector();
+            save();
         }
     }
 
@@ -85,13 +124,15 @@ public class Sector implements Serializable {
         if (index >= 0) {
             nrOfItems = nrOfItems - quantities.get(index) + quantity;
             quantities.set(index, quantity);
-            saveSector();
+            save();
         }
     }
 
-
+    // =========================
+    // Getters (Defensive)
+    // =========================
     public List<Item> getItems() {
-        return Collections.unmodifiableList(items); // Prevent external modification
+        return Collections.unmodifiableList(items);
     }
 
     public List<Supplier> getSuppliers() {
@@ -110,60 +151,27 @@ public class Sector implements Serializable {
         return sectorName;
     }
 
-
     public void setSectorName(String sectorName) {
         this.sectorName = sectorName;
-        saveSector();
+        save();
     }
 
-
-    private void saveSector() {
-        List<Sector> allSectors = loadAllSectors();
-        boolean found = false;
-
-        // Replace sector if it exists
-        for (int i = 0; i < allSectors.size(); i++) {
-            if (allSectors.get(i).sectorName.equals(this.sectorName)) {
-                allSectors.set(i, this);
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            allSectors.add(this);
-        }
-
-        // Save all sectors at once (overwrite file)
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(outputFile))) {
-            oos.writeObject(allSectors);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<Sector> loadAllSectors() {
-        if (!outputFile.exists() || outputFile.length() == 0) {
-            return new ArrayList<>();
-        }
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(outputFile))) {
-            return (List<Sector>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
-    }
-
+    // =========================
+    // toString
+    // =========================
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Sector name: " + sectorName + "\n");
+        StringBuilder sb = new StringBuilder("Sector name: ").append(sectorName).append("\n");
         sb.append("Number of items: ").append(nrOfItems).append("\n");
         sb.append("Items in sector:\n");
+
         for (int i = 0; i < items.size(); i++) {
             sb.append(items.get(i).getItemName())
-                    .append(" - quantity: ").append(quantities.get(i))
+                    .append(" - quantity: ")
+                    .append(quantities.get(i))
                     .append("\n");
         }
         return sb.toString();
     }
+
 }
