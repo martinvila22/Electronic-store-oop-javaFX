@@ -28,7 +28,7 @@ public final class Sector implements Serializable {
     private List<Supplier> suppliers;
     private List<Integer> quantities;
     private int nrOfItems;
-    private String sectorName;
+    protected String sectorName;
 
     private static final File OUTPUT_FILE = new File("src/dao/sectors.dat");
 
