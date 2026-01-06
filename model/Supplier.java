@@ -28,6 +28,9 @@ public class Supplier implements Serializable {
     public Supplier(Supplier supplier) {
     }
 
+    public Supplier(String testSupplier) {
+    }
+
     private void writeToFile() {
         try (FileOutputStream outputStream = new FileOutputStream(outputFile, true)) {
             ObjectOutputStream writer;
