@@ -1,18 +1,14 @@
 package model;
 import dao.HeaderlessObjectOutputStream;
-import view.*;
-import control.*;
-import dao.*;
 import java.io.File;
 import java.io.FileOutputStream;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-
+import java.util.Collections;
+import java.util.List;
 
 
 public class Manager extends Employee implements Serializable {
@@ -25,12 +21,12 @@ public class Manager extends Employee implements Serializable {
     private ArrayList<Item> items=new ArrayList<>();
     private boolean permissionToWork;
     private String managerId;
-    private double TotalAmountSpent;
-    private transient File outputFile=new File("src/dao/managers.dat");
+    private double totalAmountSpent;
+    private static final File outputFile=new File("src/dao/managers.dat");
 
     public Manager(String name,String surname,LocalDate dateOfBirth,int phoneNr,
                    String address,String employeeId,String managerId,String password,String role,double salary,
-                   ArrayList<Sector> sectors,ArrayList<Cashier> cashiers,ArrayList<Supplier> supp,ArrayList<Item> item) {
+                   List<Sector> sectors,List<Cashier> cashiers,List<Supplier> supp,List<Item> item) {
         super(name,surname,dateOfBirth,phoneNr,address,managerId,password,
                 employeeId,role,salary);
         sectorResponsible.addAll(sectors);
@@ -52,16 +48,12 @@ public class Manager extends Employee implements Serializable {
     }
 
     private void writeToFile() {
-        try(FileOutputStream outputStream=new FileOutputStream(outputFile, true))
+        try(FileOutputStream outputStream=new FileOutputStream(outputFile);
+            ObjectOutputStream writer = outputFile.length() > 0
+                    ? new HeaderlessObjectOutputStream(outputStream)
+                    : new ObjectOutputStream(outputStream))
         {
-            ObjectOutputStream writer;
-
-            if(outputFile.length()>0)
-                writer=new HeaderlessObjectOutputStream(outputStream);
-            else
-                writer=new ObjectOutputStream(outputStream);
             writer.writeObject(this);
-            
         }
         catch(IOException ex)
         {
@@ -81,14 +73,11 @@ public class Manager extends Employee implements Serializable {
         cashiersUnderSupervision.removeIf(cashier -> cashier.getCashierId().equals(cashierId));
         update();
     }
-    public void removeProductFromSector(String ItemName) {
-        this.sectorResponsible.removeIf(sector -> sector.getClass().equals(getItemName()));
+    public void removeProductFromSector(String itemName) {
+        for (Sector sector : sectorResponsible) {
+            sector.getItems().removeIf(item -> item.getItemName().equals(itemName));
+        }
         update();
-    }
-
-
-    public ArrayList<Cashier> getCashiers() {
-        return this.cashiersUnderSupervision;
     }
 
 
@@ -100,11 +89,6 @@ public class Manager extends Employee implements Serializable {
     }
 
 
-
-    public ArrayList<Sector> getSectors() {
-        return this.sectorResponsible;
-    }
-
     public boolean hasPermissionToWork() {
         return this.permissionToWork;
     }
@@ -115,8 +99,8 @@ public class Manager extends Employee implements Serializable {
         this.managerId = managerId;
         update();
     }
-    public ArrayList<Item> getItems(){
-        return items;
+    public List<Item> getItems() {
+        return Collections.unmodifiableList(items);
     }
 
     public void addSector(Sector sector) {
@@ -173,8 +157,8 @@ public class Manager extends Employee implements Serializable {
     }
 
 
-    public ArrayList<Supplier> getSuppliers() {
-        return this.suppliers;
+    public List<Supplier> getSuppliers() {
+        return Collections.unmodifiableList(suppliers);
     }
 
 
@@ -203,14 +187,16 @@ public class Manager extends Employee implements Serializable {
         }
     }
 
-    // Method to rate cashiers based on their performance
     public String rateCashier(String cashierId) {
         for (Cashier cashier : cashiersUnderSupervision) {
             if (cashier.getCashierId().equals(cashierId)) {
                 double avgDailySales = cashier.getTotalAmountWon() / 30;  // Assuming 30 days
-                if (cashier.getTotalAmountForDay() > avgDailySales) {
+                double todaySales = cashier.getTotalAmountForDay();
+                double epsilon = 0.01; // tolerance for floating point equality
+
+                if (todaySales > avgDailySales + epsilon) {
                     return "Amazing work done";
-                } else if (cashier.getTotalAmountForDay() == avgDailySales) {
+                } else if (Math.abs(todaySales - avgDailySales) <= epsilon) {
                     return "Good work done";
                 } else {
                     return "Bad work done";
@@ -219,6 +205,7 @@ public class Manager extends Employee implements Serializable {
         }
         return null;
     }
+
 
 
     @Override
@@ -241,11 +228,9 @@ public class Manager extends Employee implements Serializable {
         return sb.toString();
     }
 
-
-    public Iterable<? extends Sector> getSectorsResponsible() {
-        return this.sectorResponsible;
+    public Iterable<Sector> getSectorsResponsible() {
+        return Collections.unmodifiableList(sectorResponsible);
     }
-
 
     public void addProduct(Item newItem) {
         // Assuming the manager can add an item to the sectors they are responsible for.
@@ -254,6 +239,13 @@ public class Manager extends Employee implements Serializable {
             sector.addNewItem(newItem);
         }
         update();
+    }
+    public List<Sector> getSectors() {
+        return new ArrayList<>(sectorResponsible);
+    }
+
+    public List<Cashier> getCashiers() {
+        return Collections.unmodifiableList(cashiersUnderSupervision);
     }
 
 
@@ -269,10 +261,6 @@ public class Manager extends Employee implements Serializable {
         update();
     }
 
-    public Item[] getItemName() {
-        return getItemName();
-    }
-
     public void setPermissionToWork(boolean t) {
         this.permissionToWork=t;
         update();
@@ -284,23 +272,23 @@ public class Manager extends Employee implements Serializable {
 
                 outputStream.writeObject(this);
             }
-            
+
 
         } catch (IOException ex) {
-            
+
         }
     }
 
-    
 
 
-	public double getTotalAmountSpent() {
-		return this.TotalAmountSpent;
-	}
+
+    public double getTotalAmountSpent() {
+        return this.totalAmountSpent;
+    }
 
 
-	public void addTotalAmountSpent(double sum) {
-	 this.TotalAmountSpent+=sum;
-		
-	}
+    public void addTotalAmountSpent(double sum) {
+        this.totalAmountSpent+=sum;
+
+    }
 }

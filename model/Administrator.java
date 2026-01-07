@@ -4,20 +4,23 @@ import java.io.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
+import java.util.List;
 import dao.HeaderlessObjectOutputStream;
 
 public class Administrator extends Employee implements Serializable {
     private static final long serialVersionUID = 4223558147966164685L;
-    private ArrayList<Manager> managers = new ArrayList<>();
-    private ArrayList<Cashier> cashiers = new ArrayList<>();
+    private List<Manager> managers = new ArrayList<>();
+    private List<Cashier> cashiers = new ArrayList<>();
     private ArrayList<Sector> sectors=new ArrayList<>();
     private String administratorId;
-    private transient File outputFile = new File("src/dao/administrators.dat");
+    private static final File outputFile = new File("src/control/dao/administrators.dat");
+    private static List<Item> items = new ArrayList<>();
+
+
 
     public Administrator(String name, String surname, LocalDate dateOfBirth, int phoneNr, String address,
                          String administratorId, String password, String employeeId, String role,
-                         double salary,ArrayList<Manager> manager, ArrayList<Cashier> cashier,ArrayList<Sector> sector) {
+                         double salary,List<Manager> manager, List<Cashier> cashier,List<Sector> sector) {
         super(name, surname, dateOfBirth, phoneNr, address, administratorId, password, employeeId, role, salary);
         this.managers.addAll(manager);
         this.cashiers.addAll(cashier);
@@ -27,17 +30,10 @@ public class Administrator extends Employee implements Serializable {
     }
 
     private void writeToFile() {
-        try(FileOutputStream outputStream=new FileOutputStream(outputFile, true))
-        {
-            ObjectOutputStream writer;
-
-            if(outputFile.length()>0)
-                writer=new HeaderlessObjectOutputStream(outputStream);
-            else
-                writer=new ObjectOutputStream(outputStream);
+        try (ObjectOutputStream writer = outputFile.length() > 0
+                ? new HeaderlessObjectOutputStream(new FileOutputStream(outputFile))
+                : new ObjectOutputStream(new FileOutputStream(outputFile))) {
             writer.writeObject(this);
-
-            
         }
         catch(IOException ex)
         {
@@ -46,25 +42,37 @@ public class Administrator extends Employee implements Serializable {
 
     }
 
-    public ArrayList<Manager> getManagers() {
-        return managers;
-
+    public List<Manager> getManagers() {
+        return new ArrayList<>(managers);
     }
 
-    public void setManagers(ArrayList<Manager> managers) {
-        this.managers = managers;
+    public List<Cashier> getCashiers() {
+        return new ArrayList<>(cashiers);
+    }
+
+    public List<Sector> getSectors() {
+        return new ArrayList<>(sectors);
+    }
+
+    public List<Item> getItems() {
+        return items == null ? new ArrayList<>() : new ArrayList<>(items);
+    }
+
+
+    public void setManagers(List<Manager> managers) {
+        this.managers = new ArrayList<>(managers);
+        update();
+    }
+    public void addItem(Item i) {
+    	items.add(i);
+    }
+
+
+    public void setCashiers(List<Cashier> cashiers) {
+        this.cashiers = new ArrayList<>(cashiers);
         update();
     }
 
-    public ArrayList<Cashier> getCashiers() {
-        return cashiers;
-    }
-
-    public void setCashiers(ArrayList<Cashier> cashiers) {
-        this.cashiers = cashiers;
-        update();
-    }
-    public ArrayList<Sector> getSectors(){return this.sectors;}
 
     public void addManager(Manager m) {
         managers.add(m);
@@ -163,9 +171,7 @@ public class Administrator extends Employee implements Serializable {
         }
     }
 
-    public Iterable<? extends Item> getItems() {
-        return getItems();
-    }
+
 
     public void removeItem(Item itemToRemove) {
     }
@@ -174,7 +180,5 @@ public class Administrator extends Employee implements Serializable {
         return administratorId;
     }
 
-    public Sector getSectorName() {
-        return getSectorName();
-    }
+
 }

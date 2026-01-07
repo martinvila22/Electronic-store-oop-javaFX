@@ -4,7 +4,7 @@ package main;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import control.*;
+import control.FirstPageController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.*;

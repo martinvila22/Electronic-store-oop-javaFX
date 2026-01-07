@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -54,13 +55,32 @@ public class AdministratorDashboardController {
              //needs to be implemented to modify items
         });
 
-        adminView.getRemoveManagerButton().setOnAction(event -> removeManager());
+        adminView.getRemoveManagerButton().setOnAction(event -> {
+        	
+        	String selectedManager = adminView.getManagerListView().getSelectionModel().getSelectedItem();
+        	if(selectedManager!=null) {
+        		Manager m=findManagerByName(selectedManager.split(" ")[0]);
+        		removeManager(m);
+        	}
+        	else {
+        		showAlert("Remove Manager", "No manager selected.");
+        	}
+        });
 
         adminView.getModifyManagerButton().setOnAction(event -> modifyManager());
 
         adminView.getAddCashierButton().setOnAction(event -> addCashier());
+        
+        adminView.getRemoveCashierButton().setOnAction(event -> {
+            String selectedName = adminView.getCashierListView().getSelectionModel().getSelectedItem();
+            if (selectedName != null) {
+                Cashier c = findCashierByName(selectedName.split(" ")[0]); 
+                removeCashier(c);
+            } else {
+                showAlert("Remove Cashier", "No cashier selected.");
+            }
+        });
 
-        adminView.getRemoveCashierButton().setOnAction(event -> removeCashier());
 
         adminView.getModifyCashierButton().setOnAction(event -> showModifyCashier());
 
@@ -69,7 +89,7 @@ public class AdministratorDashboardController {
             revokePermission();
         });
 
-        adminView.getGivePermissionButton().setOnAction(event -> givePermission());
+        adminView.getGivePermissionButton().setOnAction(event  -> givePermission());
 
         adminView.getViewReportsButton().setOnAction(event -> handleViewReports());
 
@@ -183,14 +203,15 @@ public class AdministratorDashboardController {
 
 
 
-    private void removeManager() {
-        String selectedManager = adminView.getManagerListView().getSelectionModel().getSelectedItem();
+    public boolean removeManager(Manager selectedManager) {
+        
         if (selectedManager != null) {
-            String managerId = selectedManager.split(" - ")[1];
-            administrator.removeManager(managerId);
+            administrator.removeManager(selectedManager.getManagerId());
             populateLists();
+            return true;
         } else {
             showAlert("Remove Manager", "No manager selected.");
+            return false;
         }
     }
     
@@ -462,7 +483,6 @@ public class AdministratorDashboardController {
 
         gridPane.add(buttonBox, 1, 10);
 
-
         submitButton.setOnAction(event -> {
             try {
                 String firstName = firstNameField.getText();
@@ -499,23 +519,25 @@ public class AdministratorDashboardController {
     }
 
 
-    private void removeCashier() {
-        String selectedCashier = adminView.getCashierListView().getSelectionModel().getSelectedItem();
+    public boolean removeCashier(Cashier selectedCashier) {
+        
         if (selectedCashier != null) {
-            administrator.removeCashier(selectedCashier);
+            administrator.removeCashier(selectedCashier.getName());
             populateLists();
+            return true;
         } else {
             showAlert("Remove Cashier", "No cashier selected.");
+        return false;
         }
     }
 
-    private Sector checkSector(String sectorName) {
+    public Sector checkSector(String sectorName) {
         try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream("control/dao/sectors.dat"))) {
             Sector s;
             while (true) {
                 s = (Sector) reader.readObject();
                 if(s.getSectorName().equals(sectorName)) {
-                    System.out.println("yay");
+                    System.out.println("Found the sector");
                     return s;
                 }
             }
@@ -560,7 +582,6 @@ public class AdministratorDashboardController {
 
     
     public void handleViewReports() {
-    	
     	 String selectedCashierName = adminView.getCashierListView().getSelectionModel().getSelectedItem();
          if (selectedCashierName != null) {
              String cashierName = selectedCashierName.split(" - ")[0];
@@ -572,7 +593,6 @@ public class AdministratorDashboardController {
              }
          }
          
-    	
          String selectedManagerName = adminView.getManagerListView().getSelectionModel().getSelectedItem();
          if (selectedManagerName != null) {
              String managerName = selectedManagerName.split(" - ")[0];
@@ -591,7 +611,7 @@ public class AdministratorDashboardController {
     }
 
 
-    private  Manager findManagerByName(String name) {
+    public  Manager findManagerByName(String name) {
         String n;
        
         for (Manager manager1 : administrator.getManagers()) {
@@ -713,7 +733,7 @@ public class AdministratorDashboardController {
         contentGrid.add(new Label(String.valueOf(Cashier.getTotalAmountOfBills())), 1, 2);
 
         contentGrid.add(new Label("Accuracy Percentage:"), 0, 3);
-        contentGrid.add(new Label( Cashier.getDayOfWork()/c.getTotalAmountWon()+" %"), 1, 3);
+
 
 
         Separator separator = new Separator();
@@ -831,10 +851,10 @@ public class AdministratorDashboardController {
                     String sectorName = sectorField.getText();
 
                     Sector sector = checkSector(sectorName);
-                    sector.updateSectorItems(quantity);
                     Item newItem = new Item(itemName,12, price,
                    supplier,quantity);
                     sector.addNewItem(newItem);
+                    sector.updateItemQuantity(newItem,quantity);
                     popupStage.close();
                 } catch (Exception _) {
                     showAlert(INVALID_INPUT, "Please fill out the form correctly.");

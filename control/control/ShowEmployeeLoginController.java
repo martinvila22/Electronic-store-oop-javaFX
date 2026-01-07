@@ -14,9 +14,9 @@ public class ShowEmployeeLoginController {
     private File inputFileAdministrator = new File("control/dao/administrators.dat");
 
 
-    public void handleLogin(Stage stage,ShowEmployeeLoginView view1) {
-        String employeeId = view1.getIdField().getText();
-        String password = view1.getPasswordField().getText();
+    public void handleLogin(Stage stage,ShowEmployeeLoginView view) {
+        String employeeId = view.getIdField().getText();
+        String password = view.getPasswordField().getText();
         char type=employeeId.charAt(0);
         if(type=='C') {
         	Cashier cashier=checkCashier(employeeId,password);
@@ -112,10 +112,6 @@ public class ShowEmployeeLoginController {
         }
         return null;
     }
-
-
-
-
 
 
 

@@ -261,7 +261,6 @@ public class ManagerController {
         contentGrid.add(new Label("Accuracy Percentage:"), 0, 3);
         if(sum1==0)
             sum1=1;
-        contentGrid.add(new Label( Cashier.getDayOfWork()/sum1+" %"), 1, 3);
 
         Separator separator = new Separator();
 
