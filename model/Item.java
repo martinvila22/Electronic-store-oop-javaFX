@@ -114,7 +114,7 @@ public class Item implements Serializable {
     }
 
     public boolean getIsItemOutOfStock() {
-        return this.itemOutOfStock;
+        return this.isItemOutOfStock1();
     }
 
     public void setSellingPrice(double sellingPrice) {

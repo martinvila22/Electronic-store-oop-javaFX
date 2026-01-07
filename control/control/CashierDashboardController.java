@@ -256,7 +256,7 @@ public class CashierDashboardController {
         }
     }
     
-    private Item findItemByName(String name) {
+    public Item findItemByName(String name) {
         for (int i = 0; i < this.allItems.size(); i++) {
             if (allItems.get(i).getItemName().equals(name)) {
                 return allItems.get(i);
@@ -265,20 +265,22 @@ public class CashierDashboardController {
         return null;
     }
 
-    private ArrayList<String> getItemNamesFromList() {
+    public ArrayList<String> getItemNamesFromList() {
         ArrayList<String> itemNames = new ArrayList<>();
         for (Item item : allItems) {
             itemNames.add(item.getItemName()+" - "+item.getSellingPrice());
         }
         return itemNames;
     }
-    private Label createLabel(String text, int fontSize, String fontWeight) {
+    
+    
+    public Label createLabel(String text, int fontSize, String fontWeight) {
         Label label = new Label(text);
         label.setStyle("-fx-font-size: " + fontSize + "px; -fx-font-weight: " + fontWeight + "; -fx-text-fill: black;");
         return label;
     }
     
-    private double extractPriceFromProduct(String product) {
+    public double extractPriceFromProduct(String product) {
     	for(int i=0;i<allItems.size();i++) {
     		if(allItems.get(i).getItemName().equals(product))
     			return allItems.get(i).getSellingPrice();
@@ -288,7 +290,7 @@ public class CashierDashboardController {
        
     }
     
-    private boolean isProductEmpty(String product) {
+    public boolean isProductEmpty(String product) {
     	for(int i=0;i<allItems.size();i++) {
     		if(allItems.get(i).getItemName().equals(product)) {
     			return allItems.get(i).getIsItemOutOfStock();

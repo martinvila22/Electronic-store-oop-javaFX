@@ -38,6 +38,7 @@ public class Cashier extends Employee implements Serializable {
         this.permissionToWork = true ;
         startingDay=new Date();
         items.addAll(item);
+        this.sectorResponsible=sector;
         writeToFile();
     }
 
