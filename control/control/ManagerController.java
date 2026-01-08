@@ -33,7 +33,18 @@ public class ManagerController {
         });
 
         this.view.getSupplyStoreButton().setOnAction(e -> handleSupplyStore());
-        this.view.getRemoveCashierButton().setOnAction(e -> handleRemoveCashier());
+        this.view.getRemoveCashierButton().setOnAction(e -> {
+        	String selectedCashier = view.getCashierListView().getSelectionModel().getSelectedItem();
+        	if(selectedCashier!=null) {
+        		String cashierId = selectedCashier.split(" - ")[0];
+        		handleRemoveCashier(cashierId);
+        		 view.updateCashierListView("");
+        	}
+        	else {
+        		view.showErrorAlert("Please select a cashier to remove.");
+        	}
+        });
+
        this.view.getRemoveProductFromSectorButton().setOnAction(e -> handleRemoveProductFromSector());
         this.view.getViewReportsButton().setOnAction(e-> {
 
@@ -47,7 +58,18 @@ public class ManagerController {
             }
             });
         this.view.getAddProductButton().setOnAction(e -> handleAddProduct());
-        this.view.getRemoveProductButton().setOnAction(e -> handleRemoveProduct());
+        this.view.getRemoveProductButton().setOnAction(e -> {
+        String selectedProduct = view.getProductListView().getSelectionModel().getSelectedItem();
+        if(selectedProduct!=null) {
+        handleRemoveProduct(selectedProduct);
+        view.updateProductListView(" ");
+        manager.update();
+        }else {
+        	view.showErrorAlert("Please select a product to remove.");
+        }
+        });
+    
+    
         this.view.getViewSectorsButton().setOnAction(e -> handleViewSectors());
     }
 
@@ -107,19 +129,20 @@ public class ManagerController {
     
     
 
-    public void handleRemoveCashier() {
-        String selectedCashier = view.getCashierListView().getSelectionModel().getSelectedItem();
-        if (selectedCashier != null) {
-            String cashierId = selectedCashier.split(" - ")[0];
-            manager.removeCashier(cashierId);
-            view.updateCashierListView("");
+    public boolean handleRemoveCashier(String cashierID) {
+        
+        if (cashierID.startsWith("c")) {
+            manager.removeCashier(cashierID);
+            manager.update();
+            return true;
+           
         } else {
-            view.showErrorAlert("Please select a cashier to remove.");
+        
+            return false;
         }
-        manager.update();
+        
     }
 
-    
 
     public void handleAddProduct() {
         Stage addProductStage = new Stage();
@@ -289,20 +312,19 @@ public class ManagerController {
     }
     
 
-    public void handleRemoveProduct() {
-        String selectedProduct = view.getProductListView().getSelectionModel().getSelectedItem();
-        if (selectedProduct != null) {
+    public boolean handleRemoveProduct(String selectedProduct) {
+        
+       
             String productName = selectedProduct.split(" - ")[0];
-            manager.removeItem(productName);
+            if(manager.removeItem(productName)) {
             for(Cashier cashier:manager.getCashiers()) {
             	Item i=findItemByName(productName);
             	cashier.getItem().remove(i);
             }
-            view.updateProductListView(" ");
-        } else {
-            view.showErrorAlert("Please select a product to remove.");
-        }
-        manager.update();
+            return true;
+            }
+            return false;
+     
     }
     public void handleRemoveProductFromSector() {
         String selectedProduct = view.getProductListView().getSelectionModel().getSelectedItem();
@@ -351,7 +373,7 @@ public class ManagerController {
         alert.show();
     }
     
-    private Item findItemByName(String itemName) {
+    public Item findItemByName(String itemName) {
     	for(Item item:manager.getItems()) {
     		if(item.getItemName().equals(itemName))
     			return item;
