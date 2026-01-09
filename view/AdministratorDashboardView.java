@@ -51,9 +51,9 @@ public class AdministratorDashboardView {
     private ListView<String> itemListView;
     private Item Item;
 
-    public AdministratorDashboardView(Stage stage, Administrator admin) {
+    public AdministratorDashboardView(Stage stage, User admin) {
         this.stage = stage;
-        this.admin = admin;
+        this.admin = (Administrator) admin;
         addManagerButton = createButton("Add Manager", 12);
         removeManagerButton = createButton("Remove Manager", 12);
         modifyManagerButton = createButton("Modify Manager ", 12);
@@ -71,7 +71,7 @@ public class AdministratorDashboardView {
         cashierListView = getAvailableCashiers();
         sectorListView=getAvailableSectors();
         createMenuBar();
-        new AdministratorDashboardController( admin, this);
+        new AdministratorDashboardController( (Administrator) admin, this);
         showDashboard(createLayout());
     }
 
