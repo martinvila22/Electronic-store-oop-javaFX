@@ -49,12 +49,9 @@ public class ManagerDashboardView {
 
     }
 
-
-
     public void setValidCategories(List<String> validCategories) {
 
         this.validCategories = validCategories;
-
     }
 
 
@@ -65,11 +62,11 @@ public class ManagerDashboardView {
 
 
 
-    public ManagerDashboardView(Stage stage, Manager manager) {
+    public ManagerDashboardView(Stage stage, User manager) {
 
         this.stage = stage;
 
-        this.manager = manager;
+        this.manager = (Manager) manager;
 
 
 
@@ -115,7 +112,7 @@ public class ManagerDashboardView {
 
         });
 
-        new ManagerController(manager,this);
+        new ManagerController((Manager) manager,this);
 
 
 
