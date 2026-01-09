@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Cashier;
 import model.Item;
+import model.User;
 import dao.*;
 
 import java.io.*;
@@ -43,9 +44,9 @@ public class CashierDashboardView {
         this.removeItemButton = removeItemButton;
     }
 
-    public CashierDashboardView(Stage stage, Cashier cashier) {
+    public CashierDashboardView(Stage stage, User cashier) {
         this.stage = stage;
-        this.cashier = cashier;
+        this.cashier = (Cashier) cashier;
 
         addToCartButton = createButton("Add to Cart", 15);
         viewCartButton = createButton("View Cart", 15);
@@ -54,7 +55,7 @@ public class CashierDashboardView {
         createBillsButton = createButton("Create Bill", 15);
         removeItemButton = createButton("Remove Item", 15);
         generateBillsButton=createButton("Generate Bills",15);
-        new CashierDashboardController(cashier, this);
+        new CashierDashboardController((Cashier) cashier, this);
 
         showDashboard(createMenuBar(), createButtonLayout(), createItemsLayout(getProductList()));
     }
