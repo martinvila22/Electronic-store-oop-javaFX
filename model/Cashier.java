@@ -216,7 +216,7 @@ public class Cashier extends Employee implements Serializable {
     }
     @Override
     public boolean logIn(String username, String password) {
-        return this.cashierId.equals(username) && this.getPassword().equals(password);
+        return this.employeeId.equals(username) && this.getPassword().equals(password);
     }
 
     @Override
