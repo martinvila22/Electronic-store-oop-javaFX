@@ -38,6 +38,7 @@ public class Cashier extends Employee implements Serializable {
         this.permissionToWork = true ;
         startingDay=new Date();
         items.addAll(item);
+        this.sectorResponsible=sector;
         writeToFile();
     }
 
@@ -180,7 +181,6 @@ public class Cashier extends Employee implements Serializable {
     }
     public void endShift() {
 
-
         System.out.println("Fund dite: te ardhura = " + totalForDay + "  bills te bera: = "
                 + totalAmountOfBills);
         resetTotalForDay();
@@ -216,7 +216,7 @@ public class Cashier extends Employee implements Serializable {
     }
     @Override
     public boolean logIn(String username, String password) {
-        return this.cashierId.equals(username) && this.getPassword().equals(password);
+        return this.employeeId.equals(username) && this.getPassword().equals(password);
     }
 
     @Override
@@ -230,7 +230,7 @@ public class Cashier extends Employee implements Serializable {
     }
 
     @Override
-    public String employeeTask() {
+    public String EmployeeTask() {
 
         return "Deals with products and customers.Prepares the bills and updates the system";
     }
@@ -249,8 +249,7 @@ public class Cashier extends Employee implements Serializable {
     }
 
 
-    }
-
+}
 
 
 
