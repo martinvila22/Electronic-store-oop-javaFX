@@ -249,7 +249,7 @@ public class Manager extends Employee implements Serializable {
     }
 
 
- public boolean removeItem(String selectedProductName) {
+    public boolean removeItem(String selectedProductName) {
         for(int i=0;i<cashiersUnderSupervision.size();i++) {
             for (Item item :items) {
                 if(item.getItemName().equals(selectedProductName)) {
