@@ -18,16 +18,30 @@ public class ShowEmployeeLoginController {
         String employeeId = view.getIdField().getText();
         String password = view.getPasswordField().getText();
         char type=employeeId.charAt(0);
+        User user=handleLogin(employeeId,password,type);
+        if(user instanceof Cashier) {
+        	new CashierDashboardView(stage, user);
+        }
+        else if(user instanceof Manager) {
+        	new ManagerDashboardView(stage,user);
+        }
+        else if(user instanceof Administrator) {
+        	new AdministratorDashboardView(stage,user);
+        }else {
+        	showAlert("Acces denied","You do not have a permission to Work");
+        }
+    }
+    
+    
+    public User handleLogin(String employeeId,String password,char type) {
+    	System.out.println("inside login");
         if(type=='C') {
         	Cashier cashier=checkCashier(employeeId,password);
         	if(cashier!=null) {
         		if(cashier.getPermisssionToWork()) {
-        		System.out.println("permission granted");
-        	 new CashierDashboardView(stage, cashier);
+        		System.out.println("\npermission granted");
+        	 return cashier;
         }
-        		else {
-        			showAlert("Acces denied","You do not have a permission to Work");
-        		}
         	}
         }
         else if(type=='M') {
@@ -35,26 +49,17 @@ public class ShowEmployeeLoginController {
         	if(manager!=null) {
         		if(manager.hasPermissionToWork()) {
         	
-        	new ManagerDashboardView(stage,manager);
+        	return manager;
         }
-        		else {		
-        			System.out.println("k");
-        			showAlert("Acces denied","You do not have a permission to Work");
-        		}
         	}
        }
         else if(type=='A') {
-        	
         	Administrator admin=checkAdministrator(employeeId,password);
         	if(admin!=null) {
-        		
-        	new AdministratorDashboardView(stage,admin);
-        	
-        }
-        else {
-        	System.out.println("nada");
+        	return admin;
         }
         }
+		return null;
 
     }
 
@@ -87,6 +92,7 @@ public class ShowEmployeeLoginController {
 
 
     public Manager checkManager(String username, String password) {
+    	System.out.println("we are here");
         try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream(inputFileManager))) {
             while (true) {
                 try {
