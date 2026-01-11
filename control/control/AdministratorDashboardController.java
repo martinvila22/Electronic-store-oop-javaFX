@@ -210,7 +210,6 @@ public class AdministratorDashboardController {
             populateLists();
             return true;
         } else {
-            showAlert("Remove Manager", "No manager selected.");
             return false;
         }
     }
@@ -526,7 +525,6 @@ public class AdministratorDashboardController {
             populateLists();
             return true;
         } else {
-            showAlert("Remove Cashier", "No cashier selected.");
         return false;
         }
     }
