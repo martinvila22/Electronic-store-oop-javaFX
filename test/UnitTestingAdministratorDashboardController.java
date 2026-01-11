@@ -37,7 +37,7 @@ class UnitTestingAdministratorDashboardController {
 
     @BeforeEach
     void setUp() throws Exception {
-
+    	
         CountDownLatch latch = new CountDownLatch(1);
 
         Platform.runLater(() -> {
@@ -105,40 +105,24 @@ class UnitTestingAdministratorDashboardController {
     
     
     @Test
-    void testRemoveCashier() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-
-        Platform.runLater(() -> {
+    void testRemoveCashier(){
+       
             boolean result = adminDash.removeCashier(cashier);
             assertEquals(true,result);
 
             boolean result2 = adminDash.removeCashier(null);
             assertEquals(false,result2);
-
-            latch.countDown();
-        });
-
-        latch.await(); 
+        
     }
     
     @Test
-    void testRemoveManager() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-
-        Platform.runLater(() -> {
+    void testRemoveManager()  {
+     
             boolean result = adminDash.removeManager(manager);
             assertEquals(true,result);
 
             boolean result2 = adminDash.removeManager(null);
             assertEquals(false,result2);
-
-            latch.countDown();
-        });
-
-        latch.await(); 
-    }
-    
-    
-
 }
 
+}
