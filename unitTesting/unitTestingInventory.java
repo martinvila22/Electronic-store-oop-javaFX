@@ -20,53 +20,57 @@ class unitTestingInventory {
 
     @BeforeEach
     void setUp() {
-        item1 = new Item("Milk", 1.0, 1.5, null, 10);
-        item2 = new Item("Bread", 0.5, 1.0, null, 20);
+        item1 = new Item("Milk", 1.0, 2.0, null, 10);
+        item2 = new Item("Bread", 0.5, 1.5, null, 20);
 
         List<Item> items = new ArrayList<>();
         items.add(item1);
+        items.add(item2);
 
         inventory = new Inventory(items);
     }
 
     @Test
-    void getNrofItemsTest() {
-        assertEquals(1, inventory.getNrofItems());
-    }
-
-    @Test
-    void getSoldQuantityTotalInitiallyZeroTest() {
-        assertEquals(0, inventory.getSoldQuantityTotal());
-    }
-
-    @Test
-    void getItemsReturnsUnmodifiableListTest() {
-        List<Item> items = inventory.getItems();
-        assertThrows(UnsupportedOperationException.class,
-                () -> items.add(item2));
-    }
-
-    @Test
-    void addNewItemIncreasesItemCountTest() {
-        inventory.addNewItem(item2);
+    void testInitialNumberOfItems() {
         assertEquals(2, inventory.getNrofItems());
     }
 
     @Test
-    void addNewItemNullDoesNothingTest() {
+    void testInitialSoldQuantityTotal() {
+        assertEquals(0, inventory.getSoldQuantityTotal());
+    }
+
+    @Test
+    void testGetItemsUnmodifiable() {
+        assertEquals(2, inventory.getItems().size());
+        assertThrows(UnsupportedOperationException.class,
+                () -> inventory.getItems().add(item1));
+    }
+
+    @Test
+    void testAddNewItem() {
+        Item item3 = new Item("Cheese", 2.0, 4.0, null, 5);
+        inventory.addNewItem(item3);
+
+        assertEquals(3, inventory.getNrofItems());
+        assertEquals(3, inventory.getItems().size());
+    }
+
+    @Test
+    void testAddNewItemNull() {
         inventory.addNewItem(null);
-        assertEquals(1, inventory.getNrofItems());
+        assertEquals(2, inventory.getNrofItems());
     }
 
     @Test
-    void giveReportBeforeCreationDateReturnsZero() {
-        Date pastDate = new Date(0); // 1970
-        assertEquals(0.0, inventory.giveReportAfterPeriod(pastDate));
+    void testGiveReportAfterPeriodBeforeCreationDate() {
+        Date pastDate = new Date(System.currentTimeMillis() - 100000);
+        assertEquals(0.0, inventory.giveReportAfterPeriod(pastDate), 0.001);
     }
 
     @Test
-    void giveReportAfterCreationDateReturnsTotalSales() {
+    void testGiveReportAfterPeriodAfterCreationDate() {
         Date futureDate = new Date(System.currentTimeMillis() + 100000);
-        assertEquals(0.0, inventory.giveReportAfterPeriod(futureDate));
+        assertEquals(0.0, inventory.giveReportAfterPeriod(futureDate), 0.001);
     }
 }

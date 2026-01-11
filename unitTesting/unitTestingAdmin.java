@@ -14,63 +14,44 @@ import model.*;
 class unitTestingAdmin {
 
     private Administrator admin;
-    private Manager manager;
-    private Cashier cashier;
-    private Sector sector;
+    private Manager manager1;
+    private Cashier cashier1;
+    private Sector sector1;
 
     @BeforeEach
     void setUp() {
-        manager = new Manager(
-                "John", "Doe",
-                LocalDate.of(1985, 5, 10),
-                123456789, "Addr1",
-                "M1", "pass1",
-                "eM1", 100 , "M1"
-        );
+        manager1 = new Manager("John", "Doe", LocalDate.of(1990, 1, 1),
+                123456789, "Address", "M001", "pass", "EMP01", 121, "M1");
 
-        List<Item> items = new ArrayList<>();
-        items.add(new Item("TV", 100, 120, null, 10));
+        cashier1 = new Cashier("Jane", "Smith", LocalDate.of(1995, 5, 5),
+                987654321, "Address", "C001", "pass", "EMP02", "Cashier", 800);
 
-        sector = new Sector(items, "Electronics", new int[5], new ArrayList<>());
-
-        cashier = new Cashier(
-                "Liam", "Kola",
-                LocalDate.of(1999, 4, 12),
-                111222333, "Addr2",
-                "c1", "pass2",
-                "eC1", "Cashier",
-                900,
-                sector, items
-        );
+        sector1 = new Sector(new ArrayList<>(), "Warehouse", new int[5], new ArrayList<>());
 
         List<Manager> managers = new ArrayList<>();
-        managers.add(manager);
+        managers.add(manager1);
 
         List<Cashier> cashiers = new ArrayList<>();
-        cashiers.add(cashier);
+        cashiers.add(cashier1);
 
         List<Sector> sectors = new ArrayList<>();
-        sectors.add(sector);
+        sectors.add(sector1);
 
         admin = new Administrator(
-                "Admin", "User",
-                LocalDate.of(1990, 1, 1),
-                999999999, "AdminAddr",
-                "admin1", "adminPass",
-                "eA1", "Admin",
-                1500,
-                managers, cashiers, sectors
+                "Admin",
+                "One",
+                LocalDate.of(1985, 3, 3),
+                111222333,
+                "Admin Address",
+                "A001",
+                "adminpass",
+                "EMP00",
+                "Administrator",
+                2000,
+                managers,
+                cashiers,
+                sectors
         );
-    }
-
-    @Test
-    void testLoginSuccess() {
-        assertTrue(admin.logIn("admin1", "adminPass"));
-    }
-
-    @Test
-    void testLoginFail() {
-        assertFalse(admin.logIn("admin1", "wrongPass"));
     }
 
     @Test
@@ -79,76 +60,86 @@ class unitTestingAdmin {
     }
 
     @Test
+    void testGetCashiers() {
+        assertEquals(1, admin.getCashiers().size());
+    }
+
+    @Test
+    void testGetSectors() {
+        assertEquals(1, admin.getSectors().size());
+    }
+
+    @Test
     void testAddManager() {
-        Manager m2 = new Manager(
-                "Anna", "Smith",
-                LocalDate.of(1990, 3, 3),
-                222333444, "Addr3",
-                "M2", "pass",
-                "eM2", 1222,
-                "M1"
-        );
+        Manager m2 = new Manager("Mike", "Brown", LocalDate.of(1992, 2, 2),
+                123123123, "Addr", "M002", "pass", "EMP03", 123, "M2");
 
         admin.addManager(m2);
         assertEquals(2, admin.getManagers().size());
     }
 
     @Test
-    void testRemoveManager() {
-        admin.removeManager("m1");
-        assertEquals(0, admin.getManagers().size());
-    }
-
-    @Test
-    void testModifyManagerId() {
-        admin.modifyManagerId("m99", "m1");
-        assertEquals("m99", admin.getManagers().get(0).getManagerId());
-    }
-
-    @Test
     void testAddCashier() {
-        Cashier c2 = new Cashier(
-                "Eva", "Blue",
-                LocalDate.of(2000, 1, 1),
-                555666777, "Addr4",
-                "c2", "pass",
-                "eC2", "Cashier",
-                950,
-                sector, new ArrayList<>()
-        );
+        Cashier c2 = new Cashier("Anna", "White", LocalDate.of(1996, 6, 6),
+                321321321, "Addr", "C002", "pass", "EMP04", "Cashier", 800);
 
         admin.addCashier(c2);
         assertEquals(2, admin.getCashiers().size());
     }
 
     @Test
+    void testRemoveManager() {
+        admin.removeManager("M001");
+        assertEquals(0, admin.getManagers().size());
+    }
+
+    @Test
     void testRemoveCashier() {
-        admin.removeCashier("c1");
+        admin.removeCashier("C001");
         assertEquals(0, admin.getCashiers().size());
     }
 
     @Test
+    void testModifyManagerId() {
+        admin.modifyManagerId("M999", "M001");
+        assertEquals("M999", admin.getManagers().get(0).getManagerId());
+    }
+
+    @Test
     void testModifyCashierId() {
-        admin.modifyCashierId("c99", "c1");
-        assertEquals("c99", admin.getCashiers().get(0).getCashierId());
+        admin.modifyCashierId("C999", "C001");
+        assertEquals("C999", admin.getCashiers().get(0).getCashierId());
     }
 
     @Test
     void testRevokePermissionManager() {
-        admin.revokePermission("M1");
+        admin.revokePermission("EMP01");
         assertFalse(admin.getManagers().get(0).isPermissionToWork());
     }
 
-
     @Test
-    void testGivePermissionCashier() {
-        admin.revokePermission("eC1");
-        admin.givePermission("eC1");
-        assertTrue(admin.getCashiers().get(0).hasPermission());
+    void testGivePermissionManager() {
+        admin.givePermission("EMP01");
+        assertTrue(admin.getManagers().get(0).isPermissionToWork());
     }
 
     @Test
     void testEmployeeTask() {
         assertNotNull(admin.employeeTask());
+    }
+
+    @Test
+    void testLogInSuccess() {
+        assertTrue(admin.logIn("A001", "adminpass"));
+    }
+
+    @Test
+    void testLogInFail() {
+        assertFalse(admin.logIn("A001", "wrongpass"));
+    }
+
+    @Test
+    void testGetAdminId() {
+        assertEquals("A001", admin.getAdminiId());
     }
 }

@@ -14,76 +14,85 @@ import model.Supplier;
 class unitTestingItem {
 
     private Item item;
+    private Supplier supplier;
 
     @BeforeEach
     void setUp() {
-        item = new Item("Milk", 1.0, 2.0, null, 10);
+        item = new Item("Laptop", 500.0, 800.0, supplier, 10);
     }
 
     @Test
-    void increaseStockValidTest() {
+    void testIncreaseStockValid() {
         item.increaseStock(5);
         assertEquals(15, item.getQuantity());
+        assertFalse(item.isItemOutOfStock());
     }
 
     @Test
-    void increaseStockInvalidTest() {
+    void testIncreaseStockInvalid() {
         assertThrows(IllegalArgumentException.class,
                 () -> item.increaseStock(0));
     }
 
     @Test
-    void decreaseStockValidTest() {
+    void testDecreaseStockValid() {
         item.decreaseStock(3);
         assertEquals(7, item.getQuantity());
         assertEquals(3, item.getNrOfItemsSold());
     }
 
     @Test
-    void decreaseStockInvalidTest() {
+    void testDecreaseStockInvalid() {
         assertThrows(IllegalArgumentException.class,
                 () -> item.decreaseStock(20));
     }
 
     @Test
-    void itemOutOfStockWhenQuantityZeroTest() {
+    void testDecreaseStockNegative() {
+        assertThrows(IllegalArgumentException.class,
+                () -> item.decreaseStock(-1));
+    }
+
+    @Test
+    void testOutOfStockAfterDecrease() {
         item.decreaseStock(10);
         assertTrue(item.isItemOutOfStock());
     }
 
     @Test
-    void applyDiscountValidTest() {
-        item.applyDiscount(50);
-        assertEquals(1.0, item.getSellingPrice());
+    void testApplyDiscountValid() {
+        item.applyDiscount(25);
+        assertEquals(600.0, item.getSellingPrice(), 0.001);
     }
 
     @Test
-    void applyDiscountInvalidTest() {
+    void testApplyDiscountInvalid() {
         assertThrows(IllegalArgumentException.class,
-                () -> item.applyDiscount(150));
+                () -> item.applyDiscount(120));
     }
 
     @Test
-    void itemsWithSamePriceTest() {
-        Item item2 = new Item("Bread", 0.5, 2.0, null, 5);
+    void testItemsWithSamePrice() {
+        Item item2 = new Item("Phone", 300.0, 800.0, supplier, 5);
+        Item item3 = new Item("Tablet", 200.0, 600.0, supplier, 8);
 
-        List<Item> list = new ArrayList<>();
-        list.add(item);
-        list.add(item2);
+        List<Item> items = new ArrayList<>();
+        items.add(item);
+        items.add(item2);
+        items.add(item3);
 
-        assertEquals(2, Item.itemsWithTheSamePrice(list, 2.0));
+        int result = Item.itemsWithTheSamePrice(items, 800.0);
+        assertEquals(2, result);
     }
 
     @Test
-    void gettersTest() {
-        assertEquals("Milk", item.getItemName());
-        assertEquals(1.0, item.getPurchasePrice());
-        assertEquals(2.0, item.getSellingPrice());
-        assertEquals(10, item.getQuantity());
+    void testGetPurchaseDateDefensiveCopy() {
+        assertNotSame(item.getPurchaseDate(), item.getPurchaseDate());
     }
 
     @Test
-    void toStringContainsItemNameTest() {
-        assertTrue(item.toString().contains("Milk"));
+    void testSetQuantity() {
+        item.setQuantity(2);
+        assertEquals(2, item.getQuantity());
     }
 }

@@ -48,7 +48,8 @@ public String toString() {
 	return super.toString()+" employeeId: "+employeeId+" role:"+role+
 			" salary:"+salary;
 }
-		
+
+	public abstract String EmployeeTask();
 }
 
 

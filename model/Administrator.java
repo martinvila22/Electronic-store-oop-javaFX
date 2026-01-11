@@ -152,6 +152,11 @@ public class Administrator extends Employee implements Serializable {
     }
 
     @Override
+    public String EmployeeTask() {
+        return "";
+    }
+
+    @Override
     public boolean logIn(String username, String password) {
         return administratorId.equals(username) && super.getPassword().equals(password);
     }

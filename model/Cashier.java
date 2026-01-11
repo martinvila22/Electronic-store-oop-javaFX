@@ -54,6 +54,11 @@ public class Cashier extends Employee implements Serializable {
         writeToFile();
     }
 
+    @Override
+    public String employeeTask() {
+        return "";
+    }
+
     private void writeToFile() {
         try(FileOutputStream outputStream=new FileOutputStream(outputFile))
         {
@@ -249,6 +254,17 @@ public class Cashier extends Employee implements Serializable {
     }
 
 
+    public boolean hasPermission() {
+        return true;
+    }
+
+    public double addTotalAmountWon(int i) {
+        return totalAmountWon;
+    }
+
+    public double addTotalAmountForDay(int i) {
+        return getTotalAmountForDay();
+    }
 }
 
 

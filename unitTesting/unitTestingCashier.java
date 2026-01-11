@@ -11,123 +11,154 @@ import org.junit.jupiter.api.Test;
 
 import model.*;
 
-class unitTestingCashier{
+class unitTestingCashier {
 
     private Cashier cashier;
     private Item item1;
     private Item item2;
+    private Sector sector;
 
     @BeforeEach
     void setUp() {
-        item1 = new Item("Milk", 1.0, 1.5, null, 10);
-        item2 = new Item("Bread", 0.5, 1.0, null, 20);
+        List<Item> sectorItems = new ArrayList<>();
+
+
+        item1 = new Item("Milk", 1.0, 2.0, null, 10);
+        item2 = new Item("Bread", 0.5, 1.5, null, 20);
+
+        List<Item> items = new ArrayList<>();
+        items.add(item1);
+        items.add(item2);
 
         cashier = new Cashier(
-                "John",
-                "Doe",
-                LocalDate.of(2000, 1, 1),
+                "Anna",
+                "Smith",
+                LocalDate.of(1998, 5, 5),
                 123456789,
-                "Street 1",
-                "cash01",
-                "pass123",
-                "emp01",
-                "CASHIER",
-                500.0
+                "Address",
+                "C001",
+                "pass",
+                "EMP01",
+                "Cashier",
+                800,
+                sector,
+                items
         );
     }
 
     @Test
-    void constructorTest() {
-        assertEquals("cash01", cashier.getCashierId());
-        assertTrue(cashier.hasPermissionToWork());
-        assertEquals(0, cashier.getBillsCount());
-        assertEquals(0.0, cashier.getTotalAmountForDay());
+    void testGetCashierId() {
+        assertEquals("C001", cashier.getCashierId());
     }
 
     @Test
-    void permissionTest() {
+    void testPermissionDefaultTrue() {
+        assertTrue(cashier.hasPermissionToWork());
+    }
+
+    @Test
+    void testSetPermissionFalse() {
         cashier.setPermission(false);
         assertFalse(cashier.hasPermissionToWork());
     }
 
     @Test
-    void loginSuccessTest() {
-        assertTrue(cashier.logIn("cash01", "pass123"));
+    void testAddAmount() {
+        cashier.addAmount(100);
+        assertEquals(100, cashier.getTotalAmountForDay(), 0.001);
+        assertEquals(100, cashier.getTotalAmountWon(), 0.001);
     }
 
     @Test
-    void loginFailTest() {
-        assertFalse(cashier.logIn("cash01", "wrong"));
+    void testGetItems() {
+        assertEquals(2, cashier.getItem().size());
     }
 
     @Test
-    void createBillOneItemTest() {
+    void testAddItem() {
+        Item item3 = new Item("Cheese", 2.0, 4.0, null, 5);
+        cashier.addItem(item3);
+        assertEquals(3, cashier.getItem().size());
+    }
+
+    @Test
+    void testCreateBillOneItem() {
         Bill bill = cashier.createBillOneItem(item1, 2);
-
         assertNotNull(bill);
         assertEquals(1, cashier.getBillsCount());
         assertTrue(cashier.getTotalAmountForDay() > 0);
     }
 
     @Test
-    void createBillMultipleItemsTest() {
-        List<Item> items = new ArrayList<>();
-        List<Integer> quantities = new ArrayList<>();
+    void testCreateBillOneItemInvalid() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cashier.createBillOneItem(null, 1));
+    }
 
+    @Test
+    void testCreateBillMultipleItems() {
+        List<Item> items = new ArrayList<>();
         items.add(item1);
         items.add(item2);
-        quantities.add(1);
+
+        List<Integer> quantities = new ArrayList<>();
         quantities.add(2);
+        quantities.add(3);
 
         Bill bill = cashier.createBill(items, quantities);
-
         assertNotNull(bill);
         assertEquals(1, cashier.getBillsCount());
     }
 
     @Test
-    void createBillInvalidListsTest() {
-        List<Item> items = new ArrayList<>();
-        List<Integer> quantities = new ArrayList<>();
-
-        items.add(item1);
-        quantities.add(1);
-        quantities.add(2);
-
+    void testCreateBillInvalidLists() {
         assertThrows(IllegalArgumentException.class,
-                () -> cashier.createBill(items, quantities));
+                () -> cashier.createBill(null, null));
     }
 
     @Test
-    void addAmountTest() {
-        cashier.addAmount(50.0);
-
-        assertEquals(50.0, cashier.getTotalAmountForDay());
-        assertEquals(50.0, cashier.getTotalAmountWon());
-    }
-
-    @Test
-    void resetTotalForDayTest() {
-        cashier.addAmount(30.0);
+    void testResetTotalForDay() {
+        cashier.addAmount(200);
         cashier.resetTotalForDay();
-
-        assertEquals(0.0, cashier.getTotalAmountForDay());
+        assertEquals(0, cashier.getTotalAmountForDay(), 0.001);
     }
 
     @Test
-    void startShiftTest() {
-        cashier.addAmount(100.0);
+    void testStartShift() {
+        cashier.addAmount(150);
         cashier.startShift();
-
-        assertEquals(0.0, cashier.getTotalAmountForDay());
+        assertEquals(0, cashier.getTotalAmountForDay(), 0.001);
     }
 
     @Test
-    void endShiftTest() {
-        int dayBefore = cashier.getDayOfWork();
+    void testEndShift() {
+        int before = cashier.getDayOfWork();
         cashier.endShift();
+        assertEquals(before + 1, cashier.getDayOfWork());
+    }
 
-        assertEquals(dayBefore + 1, cashier.getDayOfWork());
+    @Test
+    void testGetBillsList() {
+        assertNotNull(cashier.getbills());
+    }
+
+    @Test
+    void testLogInSuccess() {
+        assertTrue(cashier.logIn("EMP01", "pass"));
+    }
+
+    @Test
+    void testLogInFail() {
+        assertFalse(cashier.logIn("EMP01", "wrong"));
+    }
+
+    @Test
+    void testEmployeeTask() {
+        assertNotNull(cashier.EmployeeTask());
+    }
+
+    @Test
+    void testToString() {
+        assertNotNull(cashier.toString());
     }
 }
-

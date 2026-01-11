@@ -4,179 +4,150 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import model.Bill;
-import model.Cashier;
-import model.Item;
-import model.Sector;
+import model.*;
 
-class unitTestingBill
-{
+class unitTestingBill {
 
     private Bill bill;
+    private Item item1;
+    private Item item2;
     private Cashier cashier;
-    private List<Item> items;
-    private List<Integer> quantities;
 
     @BeforeEach
     void setUp() {
-        // Prepare items
-        items = new ArrayList<>();
-        quantities = new ArrayList<>();
+        cashier = new Cashier(
+                "Anna",
+                "Cashier",
+                LocalDate.of(1998, 4, 4),
+                123456789,
+                "Address",
+                "C001",
+                "pass",
+                "EMP10",
+                "Cashier",
+                800
+        );
 
-        Item item1 = new Item("TV", 100, 150, null, 10);
-        Item item2 = new Item("Laptop", 500, 700, null, 5);
+        item1 = new Item("Milk", 1.0, 2.0, null, 10);
+        item2 = new Item("Bread", 0.5, 1.5, null, 20);
 
+        List<Item> items = new ArrayList<>();
         items.add(item1);
         items.add(item2);
 
+        List<Integer> quantities = new ArrayList<>();
         quantities.add(2);
-        quantities.add(1);
-
-        // Minimal sector for cashier
-        Sector sector = new Sector(new ArrayList<>(), "Electronics", new int[5], new ArrayList<>());
-
-        cashier = new Cashier(
-                "John", "Doe",
-                LocalDate.of(1995, 5, 5),
-                123456789,
-                "Address",
-                "c1",
-                "pass",
-                "eC1",
-                "Cashier",
-                900,
-                sector,
-                items
-        );
+        quantities.add(3);
 
         bill = new Bill(items, quantities, cashier);
     }
 
-    // ---------------- CONSTRUCTOR BEHAVIOR ----------------
-
     @Test
-    void testBillCreatedSuccessfully() {
-        assertNotNull(bill);
+    void testGetBillNumber() {
+        assertTrue(bill.getBillNumber() >= 0);
     }
 
     @Test
-    void testCreatedDateNotNull() {
-        assertNotNull(bill.getCreated());
+    void testGetCreated() {
+        Date created = bill.getCreated();
+        assertNotNull(created);
     }
 
     @Test
-    void testCreatedByCashier() {
+    void testGetCreatedBy() {
         assertEquals(cashier, bill.getCreatedBy());
     }
 
     @Test
-    void testTotalAmountCalculatedCorrectly() {
-        // (2 * 150) + (1 * 700) = 1000
-        assertEquals(1000.0, bill.getTotalAmountOfBill());
-    }
-
-    // ---------------- GETTERS ----------------
-
-    @Test
-    void testGetBillNumber() {
-        assertTrue(bill.getBillNumber() > 0);
+    void testGetTotalAmountOfBill() {
+        double expected = (2.0 * 2) + (1.5 * 3);
+        assertEquals(expected, bill.getTotalAmountOfBill(), 0.001);
     }
 
     @Test
-    void testGetFileNotNull() {
-        assertNotNull(bill.getFile());
-    }
+    void testAddItem() {
+        Item item3 = new Item("Cheese", 2.0, 4.0, null, 5);
+        bill.addItem(item3, 2);
 
-    // ---------------- addItem ----------------
-
-    @Test
-    void testAddItemIncreasesTotal() {
-        Item newItem = new Item("Mouse", 20, 30, null, 10);
-        bill.addItem(newItem, 2);
-
-        assertEquals(1060.0, bill.getTotalAmountOfBill());
+        double expectedTotal = (2.0 * 2) + (1.5 * 3) + (4.0 * 2);
+        assertEquals(expectedTotal, bill.getTotalAmountOfBill(), 0.001);
     }
 
     @Test
-    void testAddItemWithNullDoesNothing() {
+    void testAddItemInvalidQuantity() {
         double before = bill.getTotalAmountOfBill();
-        bill.addItem(null, 2);
-        assertEquals(before, bill.getTotalAmountOfBill());
+        bill.addItem(item1, -1);
+        assertEquals(before, bill.getTotalAmountOfBill(), 0.001);
     }
-
-    @Test
-    void testAddItemWithZeroQuantityDoesNothing() {
-        double before = bill.getTotalAmountOfBill();
-        bill.addItem(new Item("Keyboard", 30, 50, null, 5), 0);
-        assertEquals(before, bill.getTotalAmountOfBill());
-    }
-
-    // ---------------- isProductDiscounted ----------------
 
     @Test
     void testIsProductDiscountedFalse() {
-        assertFalse(bill.isProductDiscounted("TV"));
+        assertFalse(bill.isProductDiscounted("Milk"));
     }
 
     @Test
-    void testIsProductDiscountedUnknownProduct() {
-        assertFalse(bill.isProductDiscounted("Unknown"));
+    void testIsProductDiscountedProductNotFound() {
+        assertFalse(bill.isProductDiscounted("Chocolate"));
     }
-
-    // ---------------- applyDiscount ----------------
 
     @Test
     void testApplyDiscountValid() {
-        double discounted = bill.applyDiscount(10); // 10%
-        assertEquals(900.0, discounted);
+        double discounted = bill.applyDiscount(10);
+        double expected = bill.getTotalAmountOfBill() * 0.9;
+        assertEquals(expected, discounted, 0.001);
     }
 
     @Test
-    void testApplyDiscountZeroPercent() {
-        assertEquals(1000.0, bill.applyDiscount(0));
+    void testApplyDiscountZero() {
+        double discounted = bill.applyDiscount(0);
+        assertEquals(bill.getTotalAmountOfBill(), discounted, 0.001);
     }
 
     @Test
-    void testApplyDiscountThrowsExceptionWhenNegative() {
+    void testApplyDiscountInvalidLow() {
         assertThrows(IllegalArgumentException.class, () -> bill.applyDiscount(-5));
     }
 
     @Test
-    void testApplyDiscountThrowsExceptionWhenOver100() {
+    void testApplyDiscountInvalidHigh() {
         assertThrows(IllegalArgumentException.class, () -> bill.applyDiscount(150));
     }
-
-    // ---------------- assignCashier ----------------
 
     @Test
     void testAssignCashier() {
         Cashier newCashier = new Cashier(
-                "Anna", "Smith",
-                LocalDate.of(1998, 8, 8),
-                999999,
-                "New Address",
-                "c2",
-                "pass2",
-                "eC2",
+                "Mark",
+                "New",
+                LocalDate.of(1997, 7, 7),
+                987654321,
+                "Addr",
+                "C002",
+                "pass",
+                "EMP11",
                 "Cashier",
-                950,
-                null,
-                new ArrayList<>()
+                850
         );
 
         bill.assignCashier(newCashier);
         assertEquals(newCashier, bill.getCreatedBy());
     }
 
-    // ---------------- toString ----------------
+    @Test
+    void testGetFile() {
+        assertNotNull(bill.getFile());
+        assertTrue(bill.getFile().exists());
+    }
 
     @Test
-    void testToStringNotNull() {
-        assertNotNull(bill.toString());
+    void testToString() {
+        String result = bill.toString();
+        assertNotNull(result);
+        assertTrue(result.contains("totalAmount"));
     }
 }

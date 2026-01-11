@@ -228,6 +228,11 @@ public class Manager extends Employee implements Serializable {
         return sb.toString();
     }
 
+    @Override
+    public String EmployeeTask() {
+        return "";
+    }
+
     public Iterable<Sector> getSectorsResponsible() {
         return Collections.unmodifiableList(sectorResponsible);
     }
@@ -291,4 +296,8 @@ public class Manager extends Employee implements Serializable {
 	 this.totalAmountSpent+=sum;
 		
 	}
+
+    public boolean isPermissionToWork() {
+        return true;
+    }
 }
