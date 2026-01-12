@@ -30,7 +30,8 @@ public class AdministratorDashboardView {
     private Button modifyCashierButton;
     private Button revokePermissionButton;
     private Button givePermissionButton;
-    private Button viewReportsButton;
+    private Button viewReportsButtonCashier;
+    private Button viewReportsButtonManager;
     private Button addItemsButton;
     private Button checkTotalRevenueButton;
     private Button modifyItemsButton;
@@ -62,7 +63,8 @@ public class AdministratorDashboardView {
         modifyCashierButton = createButton("Modify Cashier ", 12);
         revokePermissionButton = createButton("Revoke Permission", 12);
         givePermissionButton = createButton("Give Permission", 12);
-        viewReportsButton = createButton("View Reports", 12);
+        viewReportsButtonCashier = createButton("View Reports for Cashier", 12);
+        viewReportsButtonManager = createButton("View Reports for Manager", 12);
         addItemsButton = createButton("Add Item", 12);
         checkTotalRevenueButton = createButton("Total Revenue Reports", 12);
         modifyItemsButton = createButton("modify Item", 12);
@@ -101,12 +103,13 @@ public class AdministratorDashboardView {
         VBox layout = new VBox(10);
 
         HBox btns = new HBox(15);
-        btns.getChildren().addAll(addManagerButton, removeManagerButton, modifyManagerButton, viewReportsButton);
-
-        HBox btns1 = new HBox(15);
+        btns.getChildren().addAll(addManagerButton, removeManagerButton, modifyManagerButton, viewReportsButtonCashier);
+        
+        HBox btns1=new HBox(15);
+        btns1.getChildren().addAll(addManagerButton, removeManagerButton, modifyManagerButton, viewReportsButtonManager);
+        HBox btns2 = new HBox(15);
         btns1.getChildren().addAll(addCashierButton, removeCashierButton, modifyCashierButton, revokePermissionButton, givePermissionButton);
-
-        HBox btns2 = new HBox(10);
+        HBox btns3 = new HBox(10);
         btns2.getChildren().addAll(addItemsButton, generalReportsButton, checkTotalRevenueButton);
 
         layout.getChildren().addAll(
@@ -265,7 +268,8 @@ public class AdministratorDashboardView {
                 modifyCashierButton,
                 revokePermissionButton,
                 givePermissionButton,
-                viewReportsButton
+                viewReportsButtonCashier,
+                viewReportsButtonManager
         );
         cashierPane.setContent(cashierButtons);
         cashierPane.setCollapsible(true);
@@ -366,8 +370,12 @@ public class AdministratorDashboardView {
         return givePermissionButton;
     }
 
-    public Button getViewReportsButton() {
-        return viewReportsButton;
+    public Button getViewReportsButtonCashier() {
+        return viewReportsButtonCashier;
+    }
+    
+    public Button getViewReportsButtonManager() {
+        return viewReportsButtonManager;
     }
 
     public void showErrorAlert(String message) {
