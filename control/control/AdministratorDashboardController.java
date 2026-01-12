@@ -85,13 +85,65 @@ public class AdministratorDashboardController {
         adminView.getModifyCashierButton().setOnAction(event -> showModifyCashier());
 
         adminView.getRevokePermissionButton().setOnAction(event -> {
-            System.out.println("Event handler");
-            revokePermission();
+        	   String selectedEmployee = null;
+               if (adminView.getManagerListView().getSelectionModel().getSelectedItem() != null) {
+                   selectedEmployee = adminView.getManagerListView().getSelectionModel().getSelectedItem();
+               }
+
+               else if (adminView.getCashierListView().getSelectionModel().getSelectedItem() != null) {
+                   selectedEmployee = adminView.getCashierListView().getSelectionModel().getSelectedItem();
+               }
+
+            boolean r=revokePermission(selectedEmployee);
+            
+            if(r)
+            	 showAlert("Permission Revoked", "Permission revoked for employee ID: " + selectedEmployee);
+            else
+            	showAlert("No Selection", "Please pick a Manager or Cashier.");
+            	
         });
 
-        adminView.getGivePermissionButton().setOnAction(event  -> givePermission());
+        adminView.getGivePermissionButton().setOnAction(event  -> 
+        {
+        	 String selectedEmployee = null;
+             if (adminView.getManagerListView().getSelectionModel().getSelectedItem() != null) {
+                 selectedEmployee = adminView.getManagerListView().getSelectionModel().getSelectedItem();
+             }
 
-        adminView.getViewReportsButton().setOnAction(event -> handleViewReports());
+             else if (adminView.getCashierListView().getSelectionModel().getSelectedItem() != null) {
+                 selectedEmployee = adminView.getCashierListView().getSelectionModel().getSelectedItem();
+             }
+
+        boolean r=givePermission(selectedEmployee);
+        if(r)
+        	showAlert("Permission given", "Permission given for employee ID: " + selectedEmployee);
+        else
+        	showAlert("No Selection", "Please pick a Manager or Cashier.");
+
+        	
+        });
+        adminView.getViewReportsButtonCashier().setOnAction(event ->
+        {
+        	 String selectedName = adminView.getCashierListView().getSelectionModel().getSelectedItem();
+        boolean r=handleViewReportsCashier(selectedName);
+        
+        if(r)
+        	showAlert("succesful","For Cashier:"+selectedName);
+        else
+        	showAlert("Not possible", "Select a cashier");
+        });
+    
+    
+    adminView.getViewReportsButtonManager().setOnAction(event ->
+    {
+    	 String selectedName = adminView.getManagerListView().getSelectionModel().getSelectedItem();
+    boolean r=handleViewReportsManager(selectedName);
+    
+    if(r)
+    	showAlert("succesful","For Manager:"+selectedName);
+    else
+    	showAlert("Not possible", "Select a manager ");
+    });
 
     }
 
@@ -547,22 +599,14 @@ public class AdministratorDashboardController {
         return null;
     }
 
-    private void revokePermission() {
-        String selectedEmployee = null;
-        if (adminView.getManagerListView().getSelectionModel().getSelectedItem() != null) {
-            selectedEmployee = adminView.getManagerListView().getSelectionModel().getSelectedItem();
-        }
-
-        else if (adminView.getCashierListView().getSelectionModel().getSelectedItem() != null) {
-            selectedEmployee = adminView.getCashierListView().getSelectionModel().getSelectedItem();
-        }
-
+    public boolean revokePermission(String selectedEmployee) {
+     
         if (selectedEmployee != null) {
             String employeeId = selectedEmployee.split(" - ")[1];
             administrator.revokePermission(employeeId);
-            showAlert("Permission Revoked", "Permission revoked for employee ID: " + employeeId);
+           return true;
         } else {
-            showAlert("No Selection", "Please pick a Manager or Cashier.");
+            return false;
         }
     }
 
@@ -579,33 +623,32 @@ public class AdministratorDashboardController {
     }
 
     
-    public void handleViewReports() {
-    	 String selectedCashierName = adminView.getCashierListView().getSelectionModel().getSelectedItem();
-         if (selectedCashierName != null) {
-             String cashierName = selectedCashierName.split(" - ")[0];
+    public boolean handleViewReportsCashier(String selectedName) {
+    	
+         if (selectedName != null) {
+             String cashierName = selectedName.split(" - ")[0];
              Cashier selectedCashier = findCashierByName(cashierName);
              if (selectedCashier != null) {
                  viewReportsForCashier(selectedCashier);
-                 System.out.println("k");
-                 return;
+                 return true;
              }
          }
          
-         String selectedManagerName = adminView.getManagerListView().getSelectionModel().getSelectedItem();
-         if (selectedManagerName != null) {
-             String managerName = selectedManagerName.split(" - ")[0];
-             Manager selectedManager = findManagerByName(managerName);
-             if (selectedManager != null) {
-                 viewReportsFromManager(selectedManager);
-                 System.out.println("k");
-
-             }         
-          }
-    	      
-         else {
-         showAlert("Not possible", "Select a manager or cashier");
-         }
+    	return false;
     
+    }
+    
+    public boolean handleViewReportsManager(String selectedName) {
+           if (selectedName != null) {
+               String managerName = selectedName.split(" - ")[0];
+               Manager selectedManager = findManagerByName(managerName);
+               if (selectedManager != null) {
+                   viewReportsFromManager(selectedManager);
+                   System.out.println("k");
+                 return true;
+               }         
+            }
+           return false;
     }
 
 
@@ -622,22 +665,15 @@ public class AdministratorDashboardController {
     }
 
 
-    private void givePermission() {
-        String selectedEmployee = null;
-        if (adminView.getManagerListView().getSelectionModel().getSelectedItem() != null) {
-            selectedEmployee = adminView.getManagerListView().getSelectionModel().getSelectedItem();
-        }
-
-        else if (adminView.getCashierListView().getSelectionModel().getSelectedItem() != null) {
-            selectedEmployee = adminView.getCashierListView().getSelectionModel().getSelectedItem();
-        }
-
+    public boolean givePermission(String selectedEmployee) {
+       
         if (selectedEmployee != null) {
             String employeeId = selectedEmployee.split(" - ")[1];
             administrator.givePermission(employeeId);
-            showAlert("Permission given", "Permission given for employee ID: " + employeeId);
+            return true;
         } else {
-            showAlert("No Selection", "Please pick a Manager or Cashier.");
+            
+            return false;
         }
     }
     
