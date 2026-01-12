@@ -71,10 +71,37 @@ class IntegrationTestingCashierDashboardController {
 	
 	
 	@Test
-	void testControllerCashierItem() {
+	void testControllerCashierItem1() {
 		List<Item> result=cashierDash.loadItems();
 		
 		assertEquals(result,items); //success
 	}
 
+	@Test
+	void testControllerCashierItem2() {
+		Item result=cashierDash.findItemByName(items.get(0).getItemName());
+		
+		assertEquals(result,items.get(0));//success
+		
+		result=cashierDash.findItemByName("none");
+		
+		assertEquals(result,null);//success
+	}
+	
+	 @Test
+	 void testControllerCashierItem3() {
+		 boolean result=cashierDash.isProductEmpty(items.get(0).getItemName());
+		 
+		 assertEquals(false,result);//success
+		 
+		 items.get(0).setQuantity(0);
+		 
+		 result=cashierDash.isProductEmpty(items.get(0).getItemName());
+		 
+		 assertEquals(true,result);//success
+		 
+		 result=cashierDash.isProductEmpty("dishwasher");
+		 
+		 assertEquals(false,result);//success
+	 }
 }
