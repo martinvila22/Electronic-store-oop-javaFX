@@ -69,15 +69,18 @@ class IntegrationTestingAdministratorDashboardController {
                 adminView = new AdministratorDashboardView(new Stage(), admin);
                 adminDash = new AdministratorDashboardController(admin, adminView);
 
-            } finally {
+            }catch (Exception e) {
+                e.printStackTrace(); 
+            }finally {
                 latch.countDown();
             }
         });
 
         latch.await(); 
     }
+	
 	@Test
-	void testControllerAdministratorManager() {
+	void testControllerAdministratorManager1() {
 		 boolean result = adminDash.removeManager(manager);
          assertEquals(true,result);
 
@@ -86,13 +89,80 @@ class IntegrationTestingAdministratorDashboardController {
 	}
 	
 	@Test
-	void testControllerAdministratorCashier() {
+	void testControllerAdministratorManager2() {
+		Manager result=adminDash.findManagerByName(manager.getName());
+		
+		assertEquals(result,manager);//success
+		
+		 result=adminDash.findManagerByName("wrongManager");
+		
+		assertEquals(result,null);
+	}
+	@Test
+	void testControllerAdministratorManager3() throws InterruptedException {
+	    CountDownLatch latch = new CountDownLatch(1);
+
+	    Platform.runLater(() -> {
+	        try {
+	           
+	   boolean result = adminDash.handleViewReportsManager(manager.getName() + " - " + manager.getManagerId());
+	     assertEquals(true, result);
+	 
+	            result = adminDash.handleViewReportsManager(null);
+	            assertEquals(false, result);
+
+	        } finally {
+	            latch.countDown(); 
+	        }
+	    });
+
+	    latch.await();
+	}
+
+	
+	@Test
+	void testControllerAdministratorCashier1() {
 		 boolean result = adminDash.removeCashier(cashier);
          assertEquals(true,result);
 
          boolean result2 = adminDash.removeCashier(null);
          assertEquals(false,result2);
 	}
+	
+	@Test
+	void testControllerAdministratorCashier2() {
+		Cashier result=adminDash.findCashierByName(cashier.getName());
+		
+		assertEquals(result,cashier);//success
+		
+		 result=adminDash.findCashierByName("wrongCashier");
+		
+		assertEquals(result,null);
+	}
+	
+	
+	@Test
+	void testControllerAdministratorCashier3() throws InterruptedException {
+	    CountDownLatch latch = new CountDownLatch(1);
+
+	    Platform.runLater(() -> {
+	        try {
+	            boolean result = adminDash.handleViewReportsCashier(
+	                cashier.getName() + " - " + cashier.getCashierId()
+	            );
+	            assertEquals(true, result);
+
+	            result = adminDash.handleViewReportsCashier(null);
+	            assertEquals(false, result);
+
+	        } finally {
+	            latch.countDown();
+	        }
+	    });
+
+	    latch.await(); // wait for UI code to finish
+	}
+
 	
 	@Test
 	void testControllerAdministratorSector() {
@@ -102,5 +172,32 @@ class IntegrationTestingAdministratorDashboardController {
 		
 		assertEquals(null,testSector); //success
 	}
+	
+	@Test
+	void testControllerAdministratorEmployee1() {
+		assertEquals(true,cashier.getPermisssionToWork());//success
+		
+		boolean result=adminDash.revokePermission(cashier.getName()+" - "+cashier.getEmployeeId());
+		assertEquals(true,result);//success
+		assertEquals(false,cashier.getPermisssionToWork());//failure
+		
+		result=adminDash.revokePermission(null);
+		
+		assertEquals(false,result);//success
+	}
+	
+	@Test
+	void testControllerAdministratorEmployee2() {
+		manager.setPermissionToWork(false);
+		assertEquals(false,manager.hasPermissionToWork());//success
+		
+		boolean result=adminDash.givePermission(manager.getName()+" - "+manager.getEmployeeId());
+		assertEquals(true,result);//success
+		assertEquals(true,manager.hasPermissionToWork());//failure
+		
+		result=adminDash.givePermission(null);
+		assertEquals(false,result);
+	}
+	
 
 }
