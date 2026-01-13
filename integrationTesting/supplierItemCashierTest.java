@@ -50,29 +50,20 @@ class supplierItemCashierTest {
                 List.of(item)
         );
     }
-
-    // ===================== ADD / LINK TEST =====================
     @Test
     void testSupplierLinkedToItem() {
         assertEquals(supplier, item.getSupplier());
         assertTrue(supplier.getIsSupplierForStore());
     }
 
-    // ===================== SALE INTEGRATION =====================
     @Test
     void testSupplierUpdatedAfterSale() {
         cashier.createBillOneItem(item, 5);
-
-        // Item stock reduced
         assertEquals(15, item.getQuantity());
-
-        // Supplier updated
         supplier.addTotalNrOfProductSold(5);
-
         assertDoesNotThrow(() -> supplier.addTotalNrOfProductSold(1));
     }
 
-    // ===================== MODIFY SUPPLIER =====================
     @Test
     void testModifySupplierData() {
         supplier.setName("Updated Supplier");

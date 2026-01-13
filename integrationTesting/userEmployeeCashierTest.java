@@ -30,14 +30,12 @@ class userEmployeeCashierTest {
         );
     }
 
-    // ===================== LOGIN INTEGRATION =====================
     @Test
     void testUserLoginIntegration() {
         assertTrue(cashier.logIn("anna01", "pass123"));
         assertFalse(cashier.logIn("anna01", "wrong"));
     }
 
-    // ===================== MODIFY PASSWORD =====================
     @Test
     void testChangePasswordIntegration() {
         boolean changed = cashier.changePass("pass123", "newPass", "newPass");
@@ -46,7 +44,6 @@ class userEmployeeCashierTest {
         assertTrue(cashier.logIn("anna01", "newPass"));
     }
 
-    // ===================== MODIFY USER DATA =====================
     @Test
     void testModifyUserPersonalData() {
         cashier.setAddress("New Address");
@@ -58,7 +55,6 @@ class userEmployeeCashierTest {
         assertEquals("Johnson", cashier.getSurname());
     }
 
-    // ===================== MODIFY EMPLOYEE DATA =====================
     @Test
     void testModifyEmployeeData() {
         cashier.setSalary(1100);
@@ -70,7 +66,6 @@ class userEmployeeCashierTest {
         assertEquals("EMP99", cashier.getEmployeeId());
     }
 
-    // ===================== EMPLOYEE TASK INTEGRATION =====================
     @Test
     void testEmployeeTaskIntegration() {
         String task = cashier.employeeTask();

@@ -53,8 +53,6 @@ class managerItemTest {
                 new ArrayList<>()
         );
     }
-
-    // ===================== ADD =====================
     @Test
     void testManagerAddsItemToSector() {
         manager.addProduct(item);
@@ -63,7 +61,6 @@ class managerItemTest {
         assertEquals("Bread", sector.getItems().get(0).getItemName());
     }
 
-    // ===================== MODIFY =====================
     @Test
     void testManagerUpdatesItemQuantityInSector() {
         manager.addProduct(item);
@@ -74,7 +71,6 @@ class managerItemTest {
         assertEquals(5, sector.getQuantities().get(index));
     }
 
-    // ===================== REMOVE =====================
     @Test
     void testManagerRemovesItemFromSector() {
         manager.addProduct(item);
