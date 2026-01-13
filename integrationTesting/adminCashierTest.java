@@ -25,7 +25,7 @@ class adminCashierTest {
 
         admin = new Administrator(
                 "Admin", "One", LocalDate.now(), 555,
-                "HQ", "A001", "admin",
+                "Address", "A001", "admin",
                 "EMP1", "ADMIN", 2000,
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>()
         );
