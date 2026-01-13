@@ -55,7 +55,6 @@ class inventoryItemCashierTest {
         );
     }
 
-    // ===================== INVENTORY CREATION =====================
     @Test
     void testInventoryInitialState() {
         assertEquals(1, inventory.getNrofItems());
@@ -63,19 +62,14 @@ class inventoryItemCashierTest {
         assertEquals(1, inventory.getItems().size());
     }
 
-    // ===================== SALE INTEGRATION =====================
     @Test
     void testInventoryAfterCashierSale() {
         cashier.createBill(List.of(item), List.of(3));
 
-        // Item stock decreased → shared object
         assertEquals(7, item.getQuantity());
-
-        // Inventory still contains the item
         assertTrue(inventory.getItems().contains(item));
     }
 
-    // ===================== REPORT AFTER PERIOD =====================
     @Test
     void testInventoryReportAfterDate() {
         cashier.createBillOneItem(item, 2);

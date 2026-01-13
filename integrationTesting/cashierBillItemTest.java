@@ -51,7 +51,6 @@ class cashierBillItemTest {
         );
     }
 
-    // ===================== CREATE BILL =====================
     @Test
     void testCashierCreatesBillWithOneItem() {
         Bill bill = cashier.createBillOneItem(item, 2);
@@ -60,7 +59,6 @@ class cashierBillItemTest {
         assertEquals(cashier, bill.getCreatedBy());
     }
 
-    // ===================== BILL TOTAL =====================
     @Test
     void testBillTotalAmountIsCorrect() {
         Bill bill = cashier.createBillOneItem(item, 2);
@@ -70,7 +68,6 @@ class cashierBillItemTest {
                 0.001);
     }
 
-    // ===================== ITEM STOCK UPDATE =====================
     @Test
     void testItemStockDecreasesAfterBillCreation() {
         cashier.createBill(List.of(item), List.of(3));
@@ -78,7 +75,6 @@ class cashierBillItemTest {
         assertEquals(7, item.getQuantity());
     }
 
-    // ===================== CASHIER STATE UPDATE =====================
     @Test
     void testCashierTotalForDayUpdated() {
         cashier.createBillOneItem(item, 2);
@@ -88,7 +84,6 @@ class cashierBillItemTest {
                 0.001);
     }
 
-    // ===================== BILL COUNT =====================
     @Test
     void testCashierBillCountIncreases() {
         cashier.createBillOneItem(item, 1);

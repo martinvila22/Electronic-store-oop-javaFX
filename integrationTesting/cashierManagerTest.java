@@ -16,7 +16,6 @@ class cashierManagerTest {
     @BeforeEach
     void setUp() {
 
-        // Create Cashier
         cashier = new Cashier(
                 "John",
                 "Doe",
@@ -30,7 +29,6 @@ class cashierManagerTest {
                 800
         );
 
-        // Create Manager
         manager = new Manager(
                 "Anna",
                 "Smith",
@@ -49,7 +47,6 @@ class cashierManagerTest {
         );
     }
 
-    // 1️⃣ Manager adds Cashier under supervision
     @Test
     void testManagerAddsCashier() {
         manager.addCashier(cashier);
@@ -58,7 +55,6 @@ class cashierManagerTest {
         assertEquals("C001", manager.getCashiers().get(0).getCashierId());
     }
 
-    // 2️⃣ Manager removes Cashier
     @Test
     void testManagerRemovesCashier() {
         manager.addCashier(cashier);
@@ -67,7 +63,6 @@ class cashierManagerTest {
         assertTrue(manager.getCashiers().isEmpty());
     }
 
-    // 3️⃣ Manager rates Cashier with no sales
     @Test
     void testManagerRatesCashierWithoutSales() {
         manager.addCashier(cashier);
@@ -82,19 +77,17 @@ class cashierManagerTest {
         );
     }
 
-    // 4️⃣ Manager rates Cashier after sales
     @Test
     void testManagerRatesCashierAfterSales() {
         manager.addCashier(cashier);
 
-        cashier.addAmount(500); // simulate sales
+        cashier.addAmount(500);
 
         String rating = manager.rateCashier("C001");
 
         assertNotNull(rating);
     }
 
-    // 5️⃣ Cashier performance affects Manager evaluation
     @Test
     void testCashierSalesAffectManagerEvaluation() {
         manager.addCashier(cashier);
@@ -108,7 +101,6 @@ class cashierManagerTest {
         assertNotNull(rating);
     }
 
-    // 6️⃣ Removing one Cashier does not affect others
     @Test
     void testManagerHandlesMultipleCashiers() {
         Cashier cashier2 = new Cashier(
