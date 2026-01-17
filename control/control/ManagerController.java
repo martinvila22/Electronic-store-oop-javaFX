@@ -269,7 +269,7 @@ public class ManagerController {
     for(Bill bill:cas.getbills()) {
 	sum1+=bill.getTotalAmountOfBill();
 	sum2++;
-}
+      }
     
     String formattedSum1 = String.format("%.2f", sum1);
         contentGrid.add(new Label("Cashier Name: "+" Surname: "), 0, 0);
@@ -310,6 +310,13 @@ public class ManagerController {
         popupStage.showAndWait();
 
     }
+    
+
+    public boolean isLowStock(Item item) {
+        int threshold = 5; // configurable
+        return item.getQuantity() < threshold;
+    }
+
     
 
     public boolean handleRemoveProduct(String selectedProduct) {
