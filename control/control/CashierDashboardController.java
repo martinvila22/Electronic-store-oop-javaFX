@@ -20,6 +20,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class CashierDashboardController {
@@ -68,7 +69,7 @@ public class CashierDashboardController {
             if (selectedItem != null) {
             	String[] parts=selectedItem.split(" - ");
                 String itemName = parts[0];
-                empty=isProductEmpty(itemName);
+                empty=addItemToCart(itemName);
                 if(empty) {
                 	showAlert("Not possible" ,"Item is empty");
                   openAddToCartWindow();	
@@ -85,6 +86,20 @@ public class CashierDashboardController {
         addToCartStage.setScene(addToCartScene);
         addToCartStage.show();
     }
+    
+    public boolean addItemToCart(String selectedItem) {
+        if(selectedItem == null) return false;
+
+        String itemName = selectedItem.split(" - ")[0];
+        if(isProductEmpty(itemName)) {
+            return false; 
+        } else {
+            cartItems.add(selectedItem);
+            totalAmount += extractPriceFromProduct(itemName);
+            return true;
+        }
+    }
+
 
     private void filterItems(KeyEvent event) {
         String query = ((TextField) event.getSource()).getText().toLowerCase();
@@ -249,12 +264,12 @@ public class CashierDashboardController {
     
     
     
-    private void loadItems() {
-    	
-        for(Item item:cashier.getItem()) {
-        	allItems.add(item);
-        }
+    public List<Item> loadItems() {
+        allItems.clear();
+        allItems.addAll(cashier.getItem());
+        return new ArrayList<>(allItems); 
     }
+
     
     public Item findItemByName(String name) {
         for (int i = 0; i < this.allItems.size(); i++) {
