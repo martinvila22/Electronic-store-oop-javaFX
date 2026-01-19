@@ -145,7 +145,7 @@ public class AdministratorDashboardController {
     });
     }
 
-    private void populateLists() {
+    public void populateLists() {
         adminView.getManagerListView().getItems().clear();
         administrator.getManagers().forEach(manager ->
                 adminView.getManagerListView().getItems().add(manager.getName() + "  " + manager.getSurname() + " - " + manager.getManagerId()));
