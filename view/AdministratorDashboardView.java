@@ -4,41 +4,44 @@ import control.AdministratorDashboardController;
 import model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import java.util.logging.Logger;
 
-import java.util.List;
+
 
 public class AdministratorDashboardView {
-    private Manager manager;
-    private Stage stage;
+
+    private final Stage stage;
     private ListView<String> managerListView = new ListView<>();
     private ListView<String> cashierListView = new ListView<>();
     private ListView<String> sectorListView=new ListView<>();
-    private Administrator admin;
-    private Button addManagerButton;
-    private Button removeManagerButton;
-    private Button modifyManagerButton;
-    private Button addCashierButton;
-    private Button removeCashierButton;
-    private Button modifyCashierButton;
-    private Button revokePermissionButton;
-    private Button givePermissionButton;
-    private Button viewReportsButton;
-    private Button addItemsButton;
-    private Button checkTotalRevenueButton;
-    private Button modifyItemsButton;
+    private final Administrator admin;
+    private final Button addManagerButton;
+    private final Button removeManagerButton;
+    private final Button modifyManagerButton;
+    private final Button addCashierButton;
+    private final Button removeCashierButton;
+    private final Button modifyCashierButton;
+    private final Button revokePermissionButton;
+    private final Button givePermissionButton;
+    private final Button viewReportsButton;
+    private final Button addItemsButton;
+    private final Button checkTotalRevenueButton;
+    private final Button modifyItemsButton;
     private Button generalReportsButton;
-    private MenuBar menuBar;
-    private Menu profileMenu;
-    private MenuItem profileMenuItem;
-    private MenuItem signOutMenuItem;
+
+
+    private static final Logger LOGGER =
+            Logger.getLogger(AdministratorDashboardView.class.getName());
+    private static final String PROFILE = "PROFILE";
+    private static final String VIEW_PROFILE = "View Profile";
+    private static final String LOGOUT = "Logout";
+    private static final String ADMIN_DASHBOARD_TITLE = "Administrator Dashboard";
+    private static final String ERROR_TITLE = "Error";
 
     public Button getGeneralReportsButton() {
         return generalReportsButton;
@@ -47,9 +50,9 @@ public class AdministratorDashboardView {
     public void setGeneralReportsButton(Button generalReportsButton) {
         this.generalReportsButton = generalReportsButton;
     }
-    private Cashier cashier;
+
     private ListView<String> itemListView;
-    private Item Item;
+
 
     public AdministratorDashboardView(Stage stage, Administrator admin) {
         this.stage = stage;
@@ -78,7 +81,7 @@ public class AdministratorDashboardView {
     public void showDashboard(VBox layout) {
         Scene scene = new Scene(layout, 1000, 700);
         stage.setScene(scene);
-        stage.setTitle("Administrator Dashboard");
+        stage.setTitle(ADMIN_DASHBOARD_TITLE);
         stage.show();
     }
 
@@ -86,12 +89,12 @@ public class AdministratorDashboardView {
 
         MenuBar menuBar = new MenuBar();
 
-        Menu profileMenu = new Menu("Profile");
+        Menu profileMenu = new Menu(PROFILE);
 
-        MenuItem profileItem = new MenuItem("View Profile");
+        MenuItem profileItem = new MenuItem(VIEW_PROFILE);
         profileItem.setOnAction(e -> handleProfile());
 
-        MenuItem logoutItem = new MenuItem("Logout");
+        MenuItem logoutItem = new MenuItem(LOGOUT);
         logoutItem.setOnAction(e -> handleSignOut());
 
         profileMenu.getItems().addAll(profileItem, logoutItem);
@@ -138,7 +141,7 @@ public class AdministratorDashboardView {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
-        alert.setTitle("Profile");
+        alert.setTitle(PROFILE);
 
         alert.setHeaderText("Profile Information");
 
@@ -172,7 +175,7 @@ public class AdministratorDashboardView {
 
 
 
-
+    @SuppressWarnings("java:S1144")
     private Manager findManagerByName(String managerName) {
         for (Manager manager : admin.getManagers()) {
             if (manager.getName().equals(managerName)) {
@@ -182,7 +185,7 @@ public class AdministratorDashboardView {
         return null;
     }
 
-
+    @SuppressWarnings("java:S1144")
     private Cashier findCashierByName(String cashierName) {
         for (Cashier cashier : admin.getCashiers()) {
             if (cashier.getName().equals(cashierName)) {
@@ -191,7 +194,7 @@ public class AdministratorDashboardView {
         }
         return null;
     }
-   
+    @SuppressWarnings("java:S1144")
     private Item findItemByName(String itemName) {
         for (Item item : admin.getItems()) {
             if (item.getItemName().equals(itemName)) {
@@ -202,8 +205,8 @@ public class AdministratorDashboardView {
     }
 
     public MenuBar createMenuBar() {
-        Menu profileMenu = new Menu("Profile");
-        MenuItem viewProfileItem = new MenuItem("View Profile");
+        Menu profileMenu = new Menu(PROFILE);
+        MenuItem viewProfileItem = new MenuItem(VIEW_PROFILE);
         MenuItem signOutItem = new MenuItem("Sign Out");
 
         profileMenu.getItems().addAll(viewProfileItem, signOutItem);
@@ -218,7 +221,7 @@ public class AdministratorDashboardView {
     }
 
     private void signOut() {
-        System.out.println("Signing out...");
+        LOGGER.info("Signing out...");
         stage.close();
     }
 
@@ -229,11 +232,11 @@ public class AdministratorDashboardView {
         profileDetails += "Salary: $" + admin.getSalary();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Profile");
+        alert.setTitle(PROFILE);
         alert.setHeaderText("Profile Information");
         alert.setContentText(profileDetails);
         alert.showAndWait();
-        System.out.println("Signing out...");
+        LOGGER.info("Signing out...");
     }
 
     private Button createButton(String text, int fontSize) {
@@ -242,7 +245,7 @@ public class AdministratorDashboardView {
         button.setMinWidth(200);
         return button;
     }
-
+    @SuppressWarnings("java:S1144")
     private TitledPane createManagerSection() {
         TitledPane managerPane = new TitledPane("Manager Actions", new VBox(10));
         VBox managerButtons = new VBox(10);
@@ -255,7 +258,7 @@ public class AdministratorDashboardView {
         managerPane.setCollapsible(true);
         return managerPane;
     }
-
+    @SuppressWarnings("java:S1144")
     private TitledPane createCashierSection() {
         TitledPane cashierPane = new TitledPane("Cashier Actions", new VBox(10));
         VBox cashierButtons = new VBox(10);
@@ -271,7 +274,7 @@ public class AdministratorDashboardView {
         cashierPane.setCollapsible(true);
         return cashierPane;
     }
-
+    @SuppressWarnings("java:S1144")
     private TitledPane createSectorSection() {
         TitledPane sectorPane = new TitledPane("Sector Actions", new VBox(10));
         VBox sectorButtons = new VBox(10);
@@ -297,8 +300,9 @@ public class AdministratorDashboardView {
     public ListView<String> getAvailableCashiers() {
         ObservableList<String> cashiers = FXCollections.observableArrayList();
         for (Cashier cashier : admin.getCashiers()) {
-            cashiers.add("k");
+            cashiers.add(cashier.getName());
         }
+
         this.cashierListView = new ListView<>(cashiers);
         return cashierListView;
     }
@@ -372,7 +376,7 @@ public class AdministratorDashboardView {
 
     public void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
+        alert.setTitle(ERROR_TITLE);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

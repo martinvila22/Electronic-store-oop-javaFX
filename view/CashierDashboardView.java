@@ -1,7 +1,7 @@
 package view;
 
 import control.*;
-
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
@@ -12,37 +12,31 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Cashier;
 import model.Item;
-import dao.*;
-
-import java.io.*;
 import java.util.ArrayList;
+
 
 public class CashierDashboardView {
 
-    private Stage stage;
+    private final Stage stage;
     private ListView<String> productList;
-    private ListView<String> cartList;
+    private Scene scene;
+    private TextField searchBar;
     private Label totalLabel;
-    private File inputFile = new File("src/dao/items.dat");
-    private Cashier cashier;
-    private ListView<String> categoryList;
-
-    private Button addToCartButton;
-    private Button viewCartButton;
-    private Button startShiftButton;
-    private Button endShiftButton;
-    private Button createBillsButton;
+    private final Cashier cashier;
+    private final Button addToCartButton;
+    private final Button viewCartButton;
+    private final Button startShiftButton;
+    private final Button endShiftButton;
+    private final Button createBillsButton;
     private Button removeItemButton;
-    private Button generateBillsButton;
-
+    private final Button generateBillsButton;
+    private static final Logger LOGGER = Logger.getLogger(CashierDashboardView.class.getName());
     public Button getRemoveItemButton() {
         return removeItemButton;
     }
-
     public void setRemoveItemButton(Button removeItemButton) {
         this.removeItemButton = removeItemButton;
     }
-
     public CashierDashboardView(Stage stage, Cashier cashier) {
         this.stage = stage;
         this.cashier = cashier;
@@ -56,7 +50,9 @@ public class CashierDashboardView {
         generateBillsButton=createButton("Generate Bills",15);
         new CashierDashboardController(cashier, this);
 
-        showDashboard(createMenuBar(), createButtonLayout(), createItemsLayout(getProductList()));
+        showDashboard(createMenuBar(), createButtonLayout(), createItemsLayout(getProductList())
+
+);
     }
 
     public void showDashboard(MenuBar menuBar, VBox buttonsLayout, VBox itemsLayout) {
@@ -65,7 +61,7 @@ public class CashierDashboardView {
         layout.setLeft(buttonsLayout);
         layout.setCenter(itemsLayout);
 
-        Scene scene = new Scene(layout, 1000, 600);
+        scene = new Scene(layout, 1000, 600);
         stage.setScene(scene);
         stage.setTitle("Cashier Dashboard");
         stage.show();
@@ -110,7 +106,7 @@ public class CashierDashboardView {
     }
 
     private void signOut() {
-        System.out.println("Signing out...");
+        LOGGER.info("Signing out...");
         stage.close();
     }
 
@@ -125,22 +121,26 @@ public class CashierDashboardView {
         alert.setHeaderText("Profile Information");
         alert.setContentText(profileDetails);
         alert.showAndWait();
-        System.out.println("Signing out...");
+        LOGGER.info("Signing out...");
     }
 
     public VBox createItemsLayout(ListView<String> productList) {
-    	
-       Label Label = createLabel(cashier.getSector().getSectorName()+" ",15,"bold");
 
-        TextField searchBar = new TextField();
+        Label sectorLabel = createLabel(
+                cashier.getSector().getSectorName() + " ",
+                15,
+                "bold"
+        );
+
+        searchBar = new TextField();
         searchBar.setPromptText("Search Items...");
-        searchBar.setOnKeyReleased(event -> filterItems(event));
+        searchBar.setOnKeyReleased(this::filterItems);
 
         VBox itemsLayout = new VBox(15);
         itemsLayout.setStyle("-fx-background-color: white; -fx-padding: 10;");
         itemsLayout.getChildren().addAll(
                 createLabel("Sector", 16, "bold"),
-                Label,
+                sectorLabel,
                 createLabel("Search Items", 16, "bold"),
                 searchBar,
                 productList
@@ -201,15 +201,20 @@ public class CashierDashboardView {
 
         productList.setItems(filteredItems);
     }
-
+    @SuppressWarnings("java:S1144")
     private void filterItemsByCategory(String category) {
         ObservableList<String> filteredItems = FXCollections.observableArrayList();
 
         for (Item item : getItems()) {
-            if (cashier.getSector().equals(category)) {
+            if (item.getSupplier() != null &&
+                    item.getSupplier().toString().equalsIgnoreCase(category)) {
                 filteredItems.add(item.getItemName());
             }
         }
+
+
+
+
 
         productList.setItems(filteredItems);
     }
@@ -289,14 +294,14 @@ public class CashierDashboardView {
     }
 
     public ListView<String> getItemsListView() {
-        return getItemsListView();
+        return productList;
     }
 
     public Scene getScene() {
-        return getScene();
+        return scene;
     }
 
     public TextField getSearchBar() {
-        return getSearchBar();
+        return searchBar;
     }
 }

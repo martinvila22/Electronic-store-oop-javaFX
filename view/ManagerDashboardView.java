@@ -1,47 +1,34 @@
 package view;
 import model.*;
 import control.*;
-import dao.*;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 
 public class ManagerDashboardView {
 
-    private Stage stage;
-    private Manager manager;
-    public ListView<String> cashierListView = new ListView<>();
-    private ListView<String> productListView = new ListView<>();
-    private Button supplyStoreButton;
-    private Button removeCashierButton;
-    private Button viewReportsButton;
-    private Button addProductButton;
-    private Button removeProductButton;
-    private Button viewSectorsButton;
-    private Button removeItemFromSectorButton;
+    private final Stage stage;
+    private final Manager manager;
+    static final ListView<String> cashierListView = new ListView<>();
+    private final ListView<String> productListView = new ListView<>();
+    private final Button supplyStoreButton;
+    private final Button removeCashierButton;
+    private final Button viewReportsButton;
+    private final Button addProductButton;
+    private final Button removeProductButton;
+    private final Button viewSectorsButton;
+    private final Button removeItemFromSectorButton;
     private MenuBar menuBar;
-    private Menu profileMenu;
-    private MenuItem profileMenuItem;
-    private MenuItem signOutMenuItem;
-    private MenuItem showSupplyStoreMenuItem;
-    private TextField cashierSearchField;
-    private TextField productSearchField;
-    private Supplier Supplier;
+
+    private final TextField cashierSearchField;
+    private final TextField productSearchField;
+    private static final String PROFILE = "Profile";
 
     List<String> validCategories ;
-    private MenuItem showSupplierMenuItem;
     
     public List<String> getValidCategories() {
 
@@ -59,7 +46,7 @@ public class ManagerDashboardView {
 
 
 
-    private Button submitButton;
+    private final Button submitButton;
 
 
 
@@ -109,11 +96,11 @@ public class ManagerDashboardView {
 
 
 
-        cashierListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        cashierListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
 
-            viewReportsButton.setDisable(newValue == null);
+            viewReportsButton.setDisable(newValue == null)
 
-        });
+        );
 
         new ManagerController(manager,this);
 
@@ -193,22 +180,21 @@ public class ManagerDashboardView {
     private void createMenuBar() {
     	menuBar = new MenuBar();
 
-        profileMenu = new Menu("Profile");
+       Menu profileMenu = new Menu(PROFILE);
 
-        profileMenuItem = new MenuItem("Profile");
+      MenuItem  profileMenuItem = new MenuItem(PROFILE);
 
-        signOutMenuItem = new MenuItem("Sign Out");
+        MenuItem signOutMenuItem = new MenuItem("Sign Out");
         
-        showSupplyStoreMenuItem = new MenuItem("Show Supplier");
+       MenuItem showSupplyStoreMenuItem = new MenuItem("Show Supplier");
 
 
         profileMenuItem.setOnAction(e -> handleProfile());
 
         signOutMenuItem.setOnAction(e -> handleSignOut());
         
-        showSupplyStoreMenuItem.setOnAction(e -> {
-            handleShowSupplyStore();
-        });
+        showSupplyStoreMenuItem.setOnAction(e ->
+            handleShowSupplyStore());
 
 
 
@@ -245,6 +231,7 @@ public class ManagerDashboardView {
     }
 
     private void showAlert(String error, String s) {
+        //*
     }
 
 
@@ -262,7 +249,7 @@ public class ManagerDashboardView {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
-        alert.setTitle("Profile");
+        alert.setTitle(PROFILE);
 
         alert.setHeaderText("Profile Information");
 
@@ -297,7 +284,7 @@ public class ManagerDashboardView {
 
     public void showAddProductDialog() {
 
-
+//*
 
     }
 

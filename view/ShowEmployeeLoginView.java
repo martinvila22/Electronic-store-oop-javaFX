@@ -14,10 +14,10 @@ import javafx.geometry.Pos;
 
 public class ShowEmployeeLoginView {
     private Stage stage;
-    private TextField idField = new TextField();
-    private PasswordField passwordField = new PasswordField();
-    private Button loginButton = new Button("Login");
-    private Label messageLabel = new Label();
+    private final TextField idField = new TextField();
+    private final PasswordField passwordField = new PasswordField();
+    private final Button loginButton = new Button("Login");
+    private final Label messageLabel = new Label();
 
     public void showLogin(Stage stage, showEmployeeLoginController controller) {
         idField.setPromptText("Enter your Employee ID");
